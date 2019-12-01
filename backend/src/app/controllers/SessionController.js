@@ -8,11 +8,15 @@ import AuthConfig from '../../configs/Auth';
 class SessionController {
   async store(req, res) {
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(),
-      password: Yup.string().min(6).required(),
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string()
+        .min(6)
+        .required(),
     });
 
-    if(!(await schema.isValid(req.body))) {
+    if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
@@ -22,8 +26,7 @@ class SessionController {
 
     if (!(await user.comparePassword(req.body.password))) {
       return res.status(401).json({ error: 'Password does not match' });
-    };
-
+    }
 
     const { id, name, email } = user;
 
@@ -34,9 +37,9 @@ class SessionController {
         email,
       },
       token: jwt.sign({ id }, AuthConfig.secretKey, {
-        expiresIn: AuthConfig.expiresIn
-      })
-    })
+        expiresIn: AuthConfig.expiresIn,
+      }),
+    });
   }
 }
 
