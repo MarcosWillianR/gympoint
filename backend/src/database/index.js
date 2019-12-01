@@ -4,6 +4,7 @@ import dbconfig from '../configs/database';
 
 import User from '../app/models/User';
 import Student from '../app/models/Student';
+import Plan from '../app/models/Plan';
 
 class Database {
   constructor() {
@@ -11,7 +12,7 @@ class Database {
   }
 
   init() {
-    const models = [User, Student];
+    const models = [User, Student, Plan];
 
     this.connection = new Sequelize(dbconfig);
 
