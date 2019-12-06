@@ -10,6 +10,12 @@ class Plan extends Model {
       },
       { sequelize }
     );
+
+    return this;
+  }
+
+  static associate(models) {
+    this.hasMany(models.Registration, { foreignKey: 'plan_id' });
   }
 }
 
