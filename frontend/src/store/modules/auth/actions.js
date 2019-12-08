@@ -11,3 +11,9 @@ export function singInSuccess(user, token) {
     payload: { user, token },
   };
 }
+
+export function singFailure() {
+  return {
+    type: '@auth/SIGN_FAILURE',
+  };
+}

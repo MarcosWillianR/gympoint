@@ -3,7 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import api from '~/services/api';
 import history from '~/services/history';
 
-import { singInSuccess } from './actions';
+import { singInSuccess, singFailure } from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -21,6 +21,8 @@ export function* signIn({ payload }) {
     history.push('/dashboard');
   } catch (err) {
     console.tron.error('Erro ao tentar criar sessão: ', err);
+
+    yield put(singFailure());
   }
 }
 

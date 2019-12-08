@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { signInRequest } from '~/store/modules/auth/actions';
 
 import logo from '~/assets/images/logo.png';
+
+import Loading from '~/components/Loading';
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -14,7 +17,12 @@ const schema = Yup.object().shape({
 });
 
 export default function SignIn() {
+  const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
+
+  const isLoading = useMemo(() => {
+    return loading ? <Loading /> : 'Entrar no sistema';
+  }, [loading]);
 
   const handleSubmit = ({ email, senha }) => {
     dispatch(signInRequest(email, senha));
@@ -40,7 +48,7 @@ export default function SignIn() {
           placeholder="*************"
         />
 
-        <button type="submit">Entrar no sistema</button>
+        <button type="submit">{isLoading}</button>
       </Form>
     </>
   );
