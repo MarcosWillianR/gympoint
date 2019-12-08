@@ -41,6 +41,13 @@ export const Container = styled.div`
       }
     }
 
+    span {
+      color: #e54b64;
+      margin-top: 10px;
+      font-weight: bold;
+      align-self: flex-start;
+    }
+
     input {
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 4px;
