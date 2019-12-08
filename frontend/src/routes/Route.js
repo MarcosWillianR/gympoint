@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route as ReactRouter, Redirect } from 'react-router-dom';
 
+import AuthLayout from '../pages/_layouts/auth';
+import DefaultLayout from '../pages/_layouts/default';
+
 export default function Route({ component: Component, isPrivate, ...rest }) {
-  const signed = false;
+  const signed = true;
 
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
@@ -13,8 +16,20 @@ export default function Route({ component: Component, isPrivate, ...rest }) {
     return <Redirect to="dashboard" />;
   }
 
-  // eslint-disable-next-line
-  return <ReactRouter {...rest} component={Component} />;
+  const Layout = signed ? DefaultLayout : AuthLayout;
+
+  return (
+    <ReactRouter
+      // eslint-disable-next-line
+      {...rest}
+      render={props => (
+        <Layout>
+          {/* eslint-disable-next-line */}
+          <Component {...props} />
+        </Layout>
+      )}
+    />
+  );
 }
 
 Route.propTypes = {
