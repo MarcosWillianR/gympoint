@@ -1,12 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 
 // import { Container } from './styles';
 
 export default function SignIn() {
-  return (
-    <View>
-      <Text>Teste root import</Text>
-    </View>
-  );
+  return <Text>SignIn</Text>;
 }

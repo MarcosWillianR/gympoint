@@ -1,12 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
-
-import SignIn from '~/pages/SignIn';
+import Routes from '~/routes';
 
 export default function App() {
-  return (
-    <View>
-      <SignIn />
-    </View>
-  );
+  return <Routes />;
 }
