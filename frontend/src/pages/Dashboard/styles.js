@@ -52,7 +52,7 @@ export const Face = styled.div`
   justify-content: center;
   align-items: center;
   backface-visibility: hidden;
-  transition: 2s ease-in-out;
+  transition: 1.5s ease-in-out;
   transform: perspective(500px) rotateY(0deg);
 
   border-radius: 4px;
