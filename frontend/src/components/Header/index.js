@@ -1,16 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { Container, Profile, CustomizedLink } from './styles';
 
 import logo from '~/assets/images/logo_home.png';
 
 import { signOut } from '~/store/modules/auth/actions';
 
-export default function Header() {
+export default function Header({ history }) {
   const dispatch = useDispatch();
   const adminName = useSelector(state => state.admin.profile.name);
+
+  const { pathname } = history.location;
 
   return (
     <Container>
@@ -19,10 +21,10 @@ export default function Header() {
           <img src={logo} alt="Gympoint - ir para a pagina inicial" />
         </Link>
         <nav>
-          <CustomizedLink to="/" active>
-            Alunos
+          <CustomizedLink to="/">Alunos</CustomizedLink>
+          <CustomizedLink to="/plans" active={pathname === '/plans'}>
+            Planos
           </CustomizedLink>
-          <CustomizedLink to="/">Planos</CustomizedLink>
           <CustomizedLink to="/">Matrículas</CustomizedLink>
           <CustomizedLink to="/">Pedidos de Auxílio</CustomizedLink>
         </nav>
@@ -37,3 +39,7 @@ export default function Header() {
     </Container>
   );
 }
+
+Header.propTypes = {
+  history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+};

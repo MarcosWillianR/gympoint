@@ -9,7 +9,7 @@ import icon4 from '~/assets/images/dashboard/undraw_personal_trainer_ote3.svg';
 
 const itens = [
   { nome: 'Alunos', img: icon1, page: '/' },
-  { nome: 'Planos', img: icon2, page: '/' },
+  { nome: 'Planos', img: icon2, page: '/plans' },
   { nome: 'Matrículas', img: icon3, page: '/' },
   { nome: 'Pedidos de Auxílio', img: icon4, page: '/' },
 ];

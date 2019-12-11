@@ -11,8 +11,9 @@ const loading = keyframes`
 
 export const Wrapper = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${props => props.align || 'center'};
   align-items: center;
+  ${props => (props.margin ? props.margin : null)}
   height: 100%;
 `;
 
