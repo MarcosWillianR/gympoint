@@ -8,17 +8,17 @@ import icon3 from '~/assets/images/dashboard/undraw_healthy_lifestyle_6tyl.svg';
 import icon4 from '~/assets/images/dashboard/undraw_personal_trainer_ote3.svg';
 
 const itens = [
-  { nome: 'Alunos', img: icon1, page: '/' },
-  { nome: 'Planos', img: icon2, page: '/plans' },
-  { nome: 'Matrículas', img: icon3, page: '/' },
-  { nome: 'Pedidos de Auxílio', img: icon4, page: '/' },
+  { key: 1, nome: 'Alunos', img: icon1, page: '/' },
+  { key: 2, nome: 'Planos', img: icon2, page: '/plans' },
+  { key: 3, nome: 'Matrículas', img: icon3, page: '/' },
+  { key: 4, nome: 'Pedidos de Auxílio', img: icon4, page: '/' },
 ];
 
 export default function Dashboard() {
   return (
     <Container>
       {itens.map(item => (
-        <Card>
+        <Card key={item.key}>
           <Face className="front">
             <img src={item.img} alt={item.nome} />
             <h2>{item.nome}</h2>

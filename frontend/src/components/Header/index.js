@@ -22,7 +22,7 @@ export default function Header({ history }) {
         </Link>
         <nav>
           <CustomizedLink to="/">Alunos</CustomizedLink>
-          <CustomizedLink to="/plans" active={pathname === '/plans'}>
+          <CustomizedLink to="/plans" active={pathname.match(/plan/g)}>
             Planos
           </CustomizedLink>
           <CustomizedLink to="/">Matrículas</CustomizedLink>

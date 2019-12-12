@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { plansRequest } from '~/store/modules/plans/actions';
 
@@ -27,10 +28,12 @@ export default function Plans() {
     <Container>
       <Header>
         <h1>Gerenciando planos</h1>
-        <button type="button">
-          <MdAdd size={22} color="#fff" />
-          Cadastrar
-        </button>
+        <Link to="/new_plan">
+          <button type="button">
+            <MdAdd size={22} color="#fff" />
+            Cadastrar
+          </button>
+        </Link>
       </Header>
       <Wrapper>
         <strong>Título</strong>

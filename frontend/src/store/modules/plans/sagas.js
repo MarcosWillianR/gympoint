@@ -14,8 +14,8 @@ export function* getPlans() {
   } catch (err) {
     toast('Falha ao tentar listar os planos, tente dar um F5 na página ;)', {
       className: css({
-        color: '#e54b64 !important',
-        background: '#fff !important',
+        color: '#fff !important',
+        background: '#e54b64 !important',
         borderRadius: '6px !important',
       }),
       bodyClassName: css({
@@ -24,7 +24,7 @@ export function* getPlans() {
         fontWeight: 'bold',
       }),
       progressClassName: css({
-        background: 'rgba(229,75,100,0.5) !important',
+        background: '#fff !important',
       }),
     });
 

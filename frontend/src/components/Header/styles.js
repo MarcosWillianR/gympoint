@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { lighten } from 'polished';
 
 export const Container = styled.div`
+  width: 100%;
   background: #fff;
   height: 60px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
