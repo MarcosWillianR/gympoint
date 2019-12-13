@@ -7,7 +7,7 @@ import SignIn from '~/pages/SignIn';
 import Dashboard from '~/pages/Dashboard';
 
 import Plans from '~/pages/Plans';
-import CreatePlan from '~/pages/Plans/CreatePlan';
+import PlanForm from '~/pages/Plans/PlanForm';
 
 export default function Routes() {
   return (
@@ -17,7 +17,8 @@ export default function Routes() {
       <Route path="/dashboard" component={Dashboard} isPrivate />
 
       <Route path="/plans" component={Plans} isPrivate />
-      <Route path="/new_plan" component={CreatePlan} isPrivate />
+      <Route path="/new_plan" component={PlanForm} isPrivate />
+      <Route path="/edit_plan/:plan_id" component={PlanForm} isPrivate />
       {/* }<Route path="/" component={() => <h1>404</h1>} />{ */}
     </Switch>
   );
