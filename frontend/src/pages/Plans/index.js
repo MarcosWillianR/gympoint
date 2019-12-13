@@ -3,11 +3,17 @@ import { MdAdd } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { plansRequest } from '~/store/modules/plans/actions';
+import {
+  plansRequest,
+  plansDeleteRequest,
+} from '~/store/modules/plans/actions';
 
 import { Header, Wrapper, PlansDesc } from './styles';
 import { Container } from '~/styles/sharedStyles';
+
 import Loading from '~/components/Loading';
+
+import history from '~/services/history';
 
 export default function Plans() {
   const dispatch = useDispatch();
@@ -23,6 +29,16 @@ export default function Plans() {
   useEffect(() => {
     setPlans(getPlans);
   }, [getPlans]);
+
+  const handleDeletePlan = plan_id => {
+    const confirmDelete = window.confirm(
+      'Tem certeza de que deseja excluir esse plano?'
+    );
+
+    if (confirmDelete) {
+      dispatch(plansDeleteRequest(plan_id));
+    }
+  };
 
   return (
     <Container>
@@ -54,8 +70,15 @@ export default function Plans() {
               <span>{plan.title}</span>
               <span>{plan.durationFormatted}</span>
               <span>{plan.priceFormatted}</span>
-              <button type="button">editar</button>
-              <button type="button">apagar</button>
+              <button
+                type="button"
+                onClick={() => history.push(`/edit_plan/${plan.id}`)}
+              >
+                editar
+              </button>
+              <button type="button" onClick={() => handleDeletePlan(plan.id)}>
+                apagar
+              </button>
             </PlansDesc>
           ))}
       </Wrapper>

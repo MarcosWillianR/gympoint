@@ -16,8 +16,10 @@ export default function plans(state = INITIAL_STATE, action) {
       case '@plans/PLANS_SUCCESS': {
         draft.plans = action.payload.plans.map(plan => {
           const textDurationFormat = plan.duration > 1 ? 'meses' : 'mês';
+          const totalPrice = plan.duration * plan.price;
           return {
             ...plan,
+            totalPrice: priceFormatter(totalPrice),
             priceFormatted: priceFormatter(plan.price),
             durationFormatted: `${plan.duration} ${textDurationFormat}`,
           };

@@ -1,6 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import { toast } from 'react-toastify';
-import { css } from 'glamor';
+import toast from '~/util/toastStyle';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -24,21 +23,12 @@ export function* signIn({ payload }) {
 
     history.push('/dashboard');
   } catch (err) {
-    toast('E-mail ou senha inválidos, por favor, verifique os campos', {
-      className: css({
-        color: '#e54b64 !important',
-        background: '#fff !important',
-        borderRadius: '6px !important',
-      }),
-      bodyClassName: css({
-        fontSize: '14px',
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: 'bold',
-      }),
-      progressClassName: css({
-        background: 'rgba(229,75,100,0.5) !important',
-      }),
-    });
+    toast(
+      'E-mail ou senha inválidos, por favor, verifique os campos',
+      '#fff',
+      '#e54b64',
+      'rgba(229,75,100,0.5)'
+    );
 
     yield put(singFailure());
   }
