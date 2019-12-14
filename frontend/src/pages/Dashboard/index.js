@@ -11,7 +11,7 @@ const itens = [
   { key: 1, nome: 'Alunos', img: icon1, page: '/' },
   { key: 2, nome: 'Planos', img: icon2, page: '/plans' },
   { key: 3, nome: 'Matrículas', img: icon3, page: '/' },
-  { key: 4, nome: 'Pedidos de Auxílio', img: icon4, page: '/' },
+  { key: 4, nome: 'Pedidos de Auxílio', img: icon4, page: '/help-orders' },
 ];
 
 export default function Dashboard() {

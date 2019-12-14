@@ -5,7 +5,7 @@ import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Header, Wrapper } from './styles';
-import { Container } from '~/styles/sharedStyles';
+import { Container, Title } from '~/styles/sharedStyles';
 
 import history from '~/services/history';
 
@@ -44,7 +44,7 @@ export default function PlanForm({ match }) {
   return (
     <Container>
       <Header>
-        <h1>Cadastro de plano</h1>
+        <Title>Cadastro de plano</Title>
         <div>
           <button type="button" onClick={() => history.goBack()}>
             <MdKeyboardArrowLeft size={22} color="#fff" />

@@ -5,3 +5,8 @@ export const Container = styled.div`
   max-width: 960px;
   margin: 40px auto 0 auto;
 `;
+
+export const Title = styled.h1`
+  color: #444;
+  font-size: 24px;
+`;

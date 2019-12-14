@@ -9,7 +9,7 @@ import {
 } from '~/store/modules/plans/actions';
 
 import { Header, Wrapper, PlansDesc } from './styles';
-import { Container } from '~/styles/sharedStyles';
+import { Container, Title } from '~/styles/sharedStyles';
 
 import Loading from '~/components/Loading';
 
@@ -43,7 +43,7 @@ export default function Plans() {
   return (
     <Container>
       <Header>
-        <h1>Gerenciando planos</h1>
+        <Title>Gerenciando planos</Title>
         <Link to="/new_plan">
           <button type="button">
             <MdAdd size={22} color="#fff" />
