@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { darken } from 'polished';
 
+export const Container = styled.div`
+  margin-top: 30px;
+  width: 100%;
+  padding: 0 22px;
+`;
+
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;
@@ -8,11 +14,11 @@ export const Header = styled.header`
 
 export const Wrapper = styled.div`
   background: #fff;
-  padding: 20px;
-  margin-top: 30px;
+  padding: 30px;
+  margin-top: 20px;
 
   display: grid;
-  grid-template-columns: repeat(3, minmax(50px, 1fr));
+  grid-template-columns: repeat(5, minmax(50px, 1fr));
 
   strong {
     font-size: 16px;
@@ -22,20 +28,24 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const PlansDesc = styled.div`
+export const RegistrationDesc = styled.div`
   position: relative;
 
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(3, minmax(50px, 1fr));
+  grid-template-columns: repeat(5, minmax(50px, 1fr));
 
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
-  margin-top: 20px;
+  margin: 20px 6px 0 0;
 
   span {
     font-size: 16px;
     color: #666;
+  }
+
+  svg {
+    margin-left: 14px;
   }
 
   button {

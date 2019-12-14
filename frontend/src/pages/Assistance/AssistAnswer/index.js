@@ -1,8 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Form, Input } from '@rocketseat/unform';
+import { useDispatch } from 'react-redux';
+
 import { Container, AnswerWrapper } from './styles';
 
 export default function AssistAnswer({ handleModalTarget, visible }) {
+  const dispatch = useDispatch();
+
+  const handleSubmit = data => {
+    console.log(data);
+  };
+
   return (
     <Container onClick={e => handleModalTarget(e)} visible={visible}>
       <AnswerWrapper className="modal-wrapper">
@@ -12,11 +21,16 @@ export default function AssistAnswer({ handleModalTarget, visible }) {
           ingerir batata doce e frango logo de primeira, preparar as marmitas e
           lotar a geladeira? Dou um pico de insulina e jogo o hipercalórico?
         </p>
-        <form>
+        <Form onSubmit={handleSubmit}>
           <strong>Sua resposta</strong>
-          <input type="text" placeholder="responde aqui..." />
+          <Input
+            multiline
+            name="instructor_answer"
+            type="text"
+            placeholder="responde aqui..."
+          />
           <button type="submit">Responder aluno</button>
-        </form>
+        </Form>
       </AnswerWrapper>
     </Container>
   );

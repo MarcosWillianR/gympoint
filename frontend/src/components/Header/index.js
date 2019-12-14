@@ -25,8 +25,16 @@ export default function Header({ history }) {
           <CustomizedLink to="/plans" active={pathname.match(/plan/g)}>
             Planos
           </CustomizedLink>
-          <CustomizedLink to="/">Matrículas</CustomizedLink>
-          <CustomizedLink to="/" active={pathname.match(/help-orders/g)}>
+          <CustomizedLink
+            to="/registrations"
+            active={pathname.match(/registrations/g)}
+          >
+            Matrículas
+          </CustomizedLink>
+          <CustomizedLink
+            to="/help-orders"
+            active={pathname.match(/help-orders/g)}
+          >
             Pedidos de Auxílio
           </CustomizedLink>
         </nav>
