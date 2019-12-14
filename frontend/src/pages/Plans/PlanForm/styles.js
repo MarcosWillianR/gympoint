@@ -5,11 +5,6 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
 
-  h1 {
-    color: #444;
-    font-size: 24px;
-  }
-
   div {
     display: flex;
   }

@@ -26,7 +26,9 @@ export default function Header({ history }) {
             Planos
           </CustomizedLink>
           <CustomizedLink to="/">Matrículas</CustomizedLink>
-          <CustomizedLink to="/">Pedidos de Auxílio</CustomizedLink>
+          <CustomizedLink to="/" active={pathname.match(/help-orders/g)}>
+            Pedidos de Auxílio
+          </CustomizedLink>
         </nav>
       </div>
 
