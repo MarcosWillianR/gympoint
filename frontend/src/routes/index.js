@@ -11,6 +11,9 @@ import PlanForm from '~/pages/Plans/PlanForm';
 
 import Assistance from '~/pages/Assistance';
 
+import Registration from '~/pages/Registration';
+import RegistrationForm from '~/pages/Registration/RegistrationForm';
+
 export default function Routes() {
   return (
     <Switch>
@@ -23,6 +26,9 @@ export default function Routes() {
       <Route path="/edit_plan/:plan_id" component={PlanForm} isPrivate />
 
       <Route path="/help-orders" component={Assistance} isPrivate />
+
+      <Route path="/registrations" component={Registration} isPrivate />
+      <Route path="/new_registration" component={RegistrationForm} isPrivate />
       {/* }<Route path="/" component={() => <h1>404</h1>} />{ */}
     </Switch>
   );

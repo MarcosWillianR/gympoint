@@ -18,16 +18,16 @@ export const Container = styled.div`
 
 export const AnswerWrapper = styled.div`
   width: 100%;
-  max-width: 365px;
+  max-width: 450px;
   display: flex;
   flex-direction: column;
   background: #fff;
   border-radius: 6px;
-  padding: 12px 24px;
+  padding: 28px;
 
   h2,
   strong {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     text-transform: uppercase;
     color: #444;
@@ -35,7 +35,7 @@ export const AnswerWrapper = styled.div`
   }
 
   p {
-    font-size: 16px;
+    font-size: 18px;
     color: #666;
     line-height: 1.4;
     margin-bottom: 20px;
@@ -44,6 +44,20 @@ export const AnswerWrapper = styled.div`
   form {
     display: flex;
     flex-direction: column;
+    textarea {
+      height: 125px;
+      resize: none;
+      padding: 10px;
+
+      border-radius: 4px;
+      border: 1px solid #ddd;
+
+      font-size: 16px;
+
+      &::placeholder {
+        color: #999;
+      }
+    }
   }
 
   button {
@@ -53,6 +67,7 @@ export const AnswerWrapper = styled.div`
 
     background-color: #e54b64;
     font-weight: bold;
+    font-size: 18px;
     text-align: center;
     color: #fff;
     border-radius: 6px;
