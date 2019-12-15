@@ -5,6 +5,8 @@ import Registration from '../models/Registration';
 import Plan from '../models/Plan';
 import Student from '../models/Student';
 
+import Mail from '../../lib/Mail';
+
 class RegistrationController {
   async index(req, res) {
     const registrations = await Registration.findAll();
@@ -73,6 +75,12 @@ class RegistrationController {
       start_date,
       end_date,
       price: total_price,
+    });
+
+    await Mail.sendMail({
+      to: `${studentExists.name} <${studentExists.email}>`,
+      subject: 'Matrícula criada',
+      text: 'Sua matrícula foi realizada com sucesso!',
     });
 
     return res.json({ message: 'Registration was created' });
