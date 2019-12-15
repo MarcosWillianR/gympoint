@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
-import { addMonths, parseISO } from 'date-fns';
+import { addMonths, parseISO, format } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
 
 import Registration from '../models/Registration';
 import Plan from '../models/Plan';
@@ -69,7 +70,7 @@ class RegistrationController {
      */
     const total_price = price * duration;
 
-    await Registration.create({
+    const { id: registration_id } = await Registration.create({
       student_id,
       plan_id,
       start_date,
@@ -77,10 +78,25 @@ class RegistrationController {
       price: total_price,
     });
 
+    const end_date_formatted = format(end_date, "d 'de' MMMM 'de' yyyy", {
+      locale: pt,
+    });
+    const total_price_formatted = Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(total_price);
+
     await Mail.sendMail({
       to: `${studentExists.name} <${studentExists.email}>`,
       subject: 'Matrícula criada',
-      text: 'Sua matrícula foi realizada com sucesso!',
+      template: 'registration',
+      context: {
+        student: studentExists.name,
+        plan: planChoosed.title,
+        end_date: end_date_formatted,
+        total_price: total_price_formatted,
+        registration_id,
+      },
     });
 
     return res.json({ message: 'Registration was created' });

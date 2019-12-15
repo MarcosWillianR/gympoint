@@ -1,0 +1,58 @@
+<style>
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .description {
+    margin-right: 20px;
+    width: 100%;
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .description .row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .welcome__footer {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 6px;
+    color: #fff;
+    background:#E54B64;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+  }
+</style>
+
+<div class="welcome">
+  <strong>
+    Bem vindo
+    <span style="text-transform: capitalize; color: #333;">{{ student }}</span>
+    !
+  </strong>
+  <p style="font-weight: bold;">Você acaba de realizar sua inscrição na academia</p>
+  <p style="font-weight: bold;">vou te mostrar algumas informações sobre o seu plano:</p>
+
+  <div class="description">
+    <strong style="text-transform: uppercase; color: #E54B64;">plano</strong>
+    <strong style="text-transform: uppercase; color: #E54B64;">data de término</strong>
+    <strong style="text-transform: uppercase; color: #E54B64;">preço total</strong>
+
+    <div class="row">
+      <span style="margin: 10px 0; color: #333;">{{ plan }}</span>
+      <span style="margin: 10px 0; color: #333;">{{ end_date }}</span>
+      <span style="margin: 10px 0; color: #333;">{{ total_price }}</span>
+    </div>
+  </div>
+
+  <footer class="welcome__footer">
+    <p>Você já pode entrar no aplicativo utilizando o <strong style="font-size: 18px;">ID {{ registration_id }}</strong></p>
+  </footer>
+</div>
