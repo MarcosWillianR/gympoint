@@ -10,7 +10,19 @@ import Mail from '../../lib/Mail';
 
 class RegistrationController {
   async index(req, res) {
-    const registrations = await Registration.findAll();
+    const registrations = await Registration.findAll({
+      attributes: ['id', 'start_date', 'end_date', 'active'],
+      include: [
+        {
+          model: Student,
+          attributes: ['name'],
+        },
+        {
+          model: Plan,
+          attributes: ['title'],
+        },
+      ],
+    });
 
     return res.json(registrations);
   }
@@ -103,11 +115,75 @@ class RegistrationController {
   }
 
   async update(req, res) {
-    return res.json({ message: 'ok' });
+    const schema = Yup.object().shape({
+      student_id: Yup.number().required(),
+      plan_id: Yup.number().required(),
+      start_date: Yup.date().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { student_id, plan_id, start_date } = req.body;
+
+    /**
+     * Verifica se a matrícula existe
+     */
+    const registration = await Registration.findByPk(req.params.reg_id);
+
+    if (!registration) {
+      return res.status(400).json({ error: 'Registration does not exists' });
+    }
+
+    /**
+     * Regra de negócio para não deixar criar duas matrículas com o mesmo aluno
+     */
+    if (student_id !== registration.student_id) {
+      const student_already_reg = await Registration.findOne({
+        where: {
+          student_id,
+        },
+      });
+
+      if (student_already_reg) {
+        return res.status(400).json({ error: 'Student already registered' });
+      }
+    }
+
+    const plan = await Plan.findByPk(plan_id);
+    const { duration, price } = plan;
+    /**
+     * Regra de negócio para informar a data final com base no plano escolhido
+     */
+    const end_date = addMonths(parseISO(start_date), duration);
+
+    /**
+     * Regra de negócio para somar o valor final da matrícula
+     */
+    const total_price = price * duration;
+
+    await registration.update({
+      student_id,
+      plan_id,
+      start_date,
+      end_date,
+      price: total_price,
+    });
+
+    return res.json({ message: 'Registration updated successfuly' });
   }
 
   async delete(req, res) {
-    return res.json({ message: 'ok' });
+    const registration = await Registration.findByPk(req.params.reg_id);
+
+    if (!registration) {
+      return res.status(400).json({ error: 'Registration does not exists' });
+    }
+
+    await registration.destroy();
+
+    return res.json({ message: 'Registration deleted successfuly' });
   }
 }
 

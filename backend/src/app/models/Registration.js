@@ -1,4 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
+import { isBefore, isAfter } from 'date-fns';
 
 class Registration extends Model {
   static init(sequelize) {
@@ -7,6 +8,18 @@ class Registration extends Model {
         start_date: DataTypes.DATE,
         end_date: DataTypes.DATE,
         price: DataTypes.DECIMAL(10, 2),
+        active: {
+          type: DataTypes.VIRTUAL(DataTypes.BOOLEAN, [
+            'start_date',
+            'end_date',
+          ]),
+          get() {
+            return (
+              isBefore(this.get('start_date'), new Date()) &&
+              isAfter(this.get('end_date'), new Date())
+            );
+          },
+        },
       },
       { sequelize }
     );
