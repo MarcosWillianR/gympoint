@@ -17,7 +17,10 @@ class Student extends Model {
   }
 
   static associate(models) {
-    this.hasOne(models.Registration, { foreignKey: 'student_id' });
+    this.hasOne(models.Registration, {
+      foreignKey: 'student_id',
+      as: 'student',
+    });
   }
 }
 

@@ -15,7 +15,7 @@ class Plan extends Model {
   }
 
   static associate(models) {
-    this.hasMany(models.Registration, { foreignKey: 'plan_id' });
+    this.hasMany(models.Registration, { foreignKey: 'plan_id', as: 'plans' });
   }
 }
 
