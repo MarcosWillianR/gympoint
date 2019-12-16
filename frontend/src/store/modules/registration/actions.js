@@ -23,3 +23,15 @@ export function registrationDeleteRequest(registration_id) {
     payload: { registration_id },
   };
 }
+
+export function registrationUpdateRequest(
+  plan_id,
+  start_date,
+  student_id,
+  registration_id
+) {
+  return {
+    type: '@registration/REGISTRATION_UPDATE_REQUEST',
+    payload: { plan_id, start_date, student_id, registration_id },
+  };
+}

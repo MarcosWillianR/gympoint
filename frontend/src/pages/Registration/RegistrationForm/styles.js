@@ -77,17 +77,21 @@ export const Wrapper = styled.div`
         }
       }
 
-      input {
+      input,
+      select {
         width: 100%;
         height: 45px;
-        margin-top: 10px;
         padding-left: 10px;
-
+        margin-top: 10px;
         font-size: 16px;
         color: #444;
 
         border: 1px solid #ddd;
         border-radius: 6px;
+      }
+
+      select {
+        background: #fff;
       }
     }
   }

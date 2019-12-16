@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Header, Wrapper, RegistrationDesc } from './styles';
 import { Title, RegisterButton } from '~/styles/sharedStyles';
 
+import history from '~/services/history';
+
 import Loading from '~/components/Loading';
 
 import {
@@ -70,7 +72,14 @@ export default function Registration() {
               size={22}
               color={registration.active ? '#42cb59' : '#dddddd'}
             />
-            <button type="button">editar</button>
+            <button
+              type="button"
+              onClick={() =>
+                history.push(`/edit_registration/${registration.id}`)
+              }
+            >
+              editar
+            </button>
             <button type="button" onClick={() => handleDelete(registration.id)}>
               apagar
             </button>

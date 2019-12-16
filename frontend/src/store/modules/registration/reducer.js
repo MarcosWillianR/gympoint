@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { parseISO } from 'date-fns';
 
 import {
   priceFormatter,
@@ -39,6 +40,7 @@ export default function registration(state = INITIAL_STATE, action) {
             active,
             id,
             Student,
+            start_date: parseISO(start_date),
             Plan,
             priceFormatted,
             form_end_date_formatted,
