@@ -37,7 +37,28 @@ export function* registrationDelete({ payload }) {
   }
 }
 
+export function* registrationUpdate({ payload }) {
+  try {
+    const { plan_id, start_date, student_id, registration_id } = payload;
+
+    const response = yield call(api.put, `/registrations/${registration_id}`, {
+      plan_id,
+      start_date,
+      student_id,
+    });
+
+    if (response.status === 200) {
+      history.push('/registrations');
+    }
+  } catch (err) {
+    toast('Falha ao tentar editar a matrícula', '#e54b64', '#fff', '#fff');
+
+    yield put(registrationFailed());
+  }
+}
+
 export default all([
   takeLatest('@registration/GET_ALL_REQUEST', getAll),
   takeLatest('@registration/REGISTRATION_DELETE_REQUEST', registrationDelete),
+  takeLatest('@registration/REGISTRATION_UPDATE_REQUEST', registrationUpdate),
 ]);

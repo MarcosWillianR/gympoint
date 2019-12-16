@@ -62,7 +62,7 @@ export default function PlanForm({ match }) {
             <label>Título do Plano</label>
             <Input
               type="text"
-              value={(onePlan && onePlan.title) || null}
+              value={(onePlan && onePlan.title) || ''}
               name="plan_title"
               onChange={e => setOnePlan({ ...onePlan, title: e.target.value })}
             />
@@ -73,7 +73,7 @@ export default function PlanForm({ match }) {
             </label>
             <Input
               type="text"
-              value={(onePlan && onePlan.duration) || null}
+              value={(onePlan && onePlan.duration) || ''}
               name="plan_duration"
               onChange={e =>
                 setOnePlan({ ...onePlan, duration: e.target.value })
@@ -84,7 +84,7 @@ export default function PlanForm({ match }) {
             <label>Preço mensal</label>
             <Input
               type="text"
-              value={(onePlan && onePlan.price) || null}
+              value={(onePlan && onePlan.price) || ''}
               name="plan_price"
               onChange={e => setOnePlan({ ...onePlan, price: e.target.value })}
             />
@@ -93,7 +93,7 @@ export default function PlanForm({ match }) {
             <label>Preço total</label>
             <Input
               type="text"
-              value={(onePlan && onePlan.totalPrice) || null}
+              value={(onePlan && onePlan.totalPrice) || ''}
               name="plan_total"
               disabled
             />

@@ -29,6 +29,11 @@ export default function Routes() {
 
       <Route path="/registrations" component={Registration} isPrivate />
       <Route path="/new_registration" component={RegistrationForm} isPrivate />
+      <Route
+        path="/edit_registration/:reg_id"
+        component={RegistrationForm}
+        isPrivate
+      />
       {/* }<Route path="/" component={() => <h1>404</h1>} />{ */}
     </Switch>
   );
