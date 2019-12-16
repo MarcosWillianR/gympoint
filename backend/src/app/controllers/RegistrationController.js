@@ -15,7 +15,7 @@ class RegistrationController {
       include: [
         {
           model: Student,
-          attributes: ['name'],
+          attributes: ['id', 'name'],
         },
         {
           model: Plan,
