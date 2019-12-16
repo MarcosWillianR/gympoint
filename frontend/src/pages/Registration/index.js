@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdCheckCircle } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, Header, Wrapper, RegistrationDesc } from './styles';
 import { Title, RegisterButton } from '~/styles/sharedStyles';
 
+import Loading from '~/components/Loading';
+
+import {
+  getAllRequest,
+  registrationDeleteRequest,
+} from '~/store/modules/registration/actions';
+
 export default function Registration() {
+  const dispatch = useDispatch();
+  const registrations = useSelector(state => state.registration.registrations);
+  const loading = useSelector(state => state.registration.loading);
+
+  useEffect(() => {
+    dispatch(getAllRequest());
+  }, []) // eslint-disable-line
+
+  const handleDelete = registration_id => {
+    const confirmDelete = window.confirm(
+      'Tem certeza de que deseja excluir essa matricula?'
+    );
+
+    if (confirmDelete) {
+      dispatch(registrationDeleteRequest(registration_id));
+    }
+  };
   return (
     <Container>
       <Header>
@@ -25,31 +50,32 @@ export default function Registration() {
         <strong>Término</strong>
         <strong>Ativa</strong>
 
-        {/* {loading ? (
+        {loading ? (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
+            <Loading align="flex-start" margin="margin-top: 10px" />
+            <Loading align="flex-start" margin="margin-top: 10px" />
+            <Loading align="flex-start" margin="margin-top: 10px" />
+            <Loading align="flex-start" margin="margin-top: 10px" />
           </>
-        ) : null} */}
+        ) : null}
 
-        <RegistrationDesc>
-          <span>Lennert Nijenbijvank</span>
-          <span>Start</span>
-          <span>30 de Abril de 2019</span>
-          <span>30 de Maio de 2019</span>
-          <MdCheckCircle size={22} color="#42cb59" />
-          <button type="button">editar</button>
-          <button type="button">apagar</button>
-        </RegistrationDesc>
-
-        <RegistrationDesc>
-          <span>Sebastian Westergren</span>
-          <span>Diamond</span>
-          <span>14 de Outubro de 2019</span>
-          <span>14 de Abril de 2020</span>
-          <MdCheckCircle size={22} color="#dddddd" />
-          <button type="button">editar</button>
-          <button type="button">apagar</button>
-        </RegistrationDesc>
+        {registrations.map(registration => (
+          <RegistrationDesc key={registration.id}>
+            <span>{registration.Student.name}</span>
+            <span>{registration.Plan.title}</span>
+            <span>{registration.start_date_formatted}</span>
+            <span>{registration.list_end_date_formatted}</span>
+            <MdCheckCircle
+              size={22}
+              color={registration.active ? '#42cb59' : '#dddddd'}
+            />
+            <button type="button">editar</button>
+            <button type="button" onClick={() => handleDelete(registration.id)}>
+              apagar
+            </button>
+          </RegistrationDesc>
+        ))}
       </Wrapper>
     </Container>
   );
