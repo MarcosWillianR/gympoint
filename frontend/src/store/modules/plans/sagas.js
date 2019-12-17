@@ -67,7 +67,7 @@ export function* editPlan({ payload }) {
 export function* deletePlan({ payload }) {
   try {
     const { id } = payload;
-    const response = yield call(api.delete, `/plans/${String(id)}`);
+    const response = yield call(api.delete, `/plans/${id}`);
 
     if (response.status === 200) {
       window.location.reload();
