@@ -3,15 +3,20 @@ import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Form, Input, Select } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
+
 import DatePicker from 'react-datepicker';
 import pt from 'date-fns/locale/pt-BR';
+
 import SelectStudent from 'react-select/async';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
 
 import { plansRequest } from '~/store/modules/plans/actions';
-import { registrationUpdateRequest } from '~/store/modules/registration/actions';
+import {
+  registrationUpdateRequest,
+  registrationCreateRequest,
+} from '~/store/modules/registration/actions';
 
 import history from '~/services/history';
 
@@ -29,14 +34,18 @@ export default function RegistrationForm({ match }) {
   const registrations = useSelector(state => state.registration.registrations);
   const plans = useSelector(state => state.plans.plans);
 
-  const handleSubmit = ({ plan_type }) => {
+  const handleSubmit = ({ plan_id }) => {
     const {
       start_date,
-      Student: { id },
+      Student: { id: student_id },
     } = oneRegistration;
 
     if (isEditPage) {
-      dispatch(registrationUpdateRequest(plan_type, start_date, id, reg_id));
+      dispatch(
+        registrationUpdateRequest(plan_id, start_date, student_id, reg_id)
+      );
+    } else {
+      dispatch(registrationCreateRequest(student_id, plan_id, start_date));
     }
   };
 
@@ -128,7 +137,7 @@ export default function RegistrationForm({ match }) {
             <Select
               id="plan"
               type="text"
-              name="plan_type"
+              name="plan_id"
               placeholder="Selecione o plano"
               options={allPlans}
             />
@@ -140,7 +149,10 @@ export default function RegistrationForm({ match }) {
               selected={(oneRegistration && oneRegistration.start_date) || ''}
               onChange={handleDateChange}
               locale={pt}
-              placeholder="Escolha a data"
+              minDate={new Date()}
+              showDisabledMonthNavigation
+              placeholderText="Escolha a data"
+              dateFormat="dd'/'MM'/'yyyy"
             />
           </div>
           <div className="one_four">
