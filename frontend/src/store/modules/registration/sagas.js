@@ -57,8 +57,27 @@ export function* registrationUpdate({ payload }) {
   }
 }
 
+export function* registrationCreate({ payload }) {
+  try {
+    const { student_id, plan_id, start_date } = payload;
+
+    const response = yield call(api.post, '/registrations', {
+      student_id,
+      plan_id,
+      start_date,
+    });
+
+    if (response.status === 200) {
+      history.push('/registrations');
+    }
+  } catch (err) {
+    toast('Erro ao tentar criar uma matrícula', '#e54b64', '#fff', '#fff');
+  }
+}
+
 export default all([
   takeLatest('@registration/GET_ALL_REQUEST', getAll),
   takeLatest('@registration/REGISTRATION_DELETE_REQUEST', registrationDelete),
   takeLatest('@registration/REGISTRATION_UPDATE_REQUEST', registrationUpdate),
+  takeLatest('@registration/REGISTRATION_CREATE_REQUEST', registrationCreate),
 ]);

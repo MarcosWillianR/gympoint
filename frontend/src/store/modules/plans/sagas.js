@@ -67,13 +67,18 @@ export function* editPlan({ payload }) {
 export function* deletePlan({ payload }) {
   try {
     const { id } = payload;
-    const response = yield call(api.delete, `plans/${id}`);
+    const response = yield call(api.delete, `/plans/${id}`);
 
     if (response.status === 200) {
       window.location.reload();
     }
   } catch (err) {
-    toast('Erro ao tentar deletar o Plano', '#e54b64', '#fff', '#fff');
+    toast(
+      'Erro ao tentar deletar o Plano, ele está em uso?',
+      '#e54b64',
+      '#fff',
+      '#fff'
+    );
   }
 }
 
