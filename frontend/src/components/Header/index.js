@@ -21,7 +21,9 @@ export default function Header({ history }) {
           <img src={logo} alt="Gympoint - ir para a pagina inicial" />
         </Link>
         <nav>
-          <CustomizedLink to="/">Alunos</CustomizedLink>
+          <CustomizedLink to="/students" active={pathname.match(/students/g)}>
+            Alunos
+          </CustomizedLink>
           <CustomizedLink to="/plans" active={pathname.match(/plan/g)}>
             Planos
           </CustomizedLink>

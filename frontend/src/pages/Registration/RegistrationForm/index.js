@@ -5,7 +5,7 @@ import { Form, Input, Select } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 
 import DatePicker from 'react-datepicker';
-import pt from 'date-fns/locale/pt-BR';
+import pt from 'date-fns/locale/pt';
 
 import SelectStudent from 'react-select/async';
 
@@ -149,6 +149,7 @@ export default function RegistrationForm({ match }) {
               selected={(oneRegistration && oneRegistration.start_date) || ''}
               onChange={handleDateChange}
               locale={pt}
+              todayButton="Hoje"
               minDate={new Date()}
               showDisabledMonthNavigation
               placeholderText="Escolha a data"
