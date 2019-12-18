@@ -14,6 +14,9 @@ import Assistance from '~/pages/Assistance';
 import Registration from '~/pages/Registration';
 import RegistrationForm from '~/pages/Registration/RegistrationForm';
 
+import Students from '~/pages/Students';
+import StudentForm from '~/pages/Students/StudentForm';
+
 export default function Routes() {
   return (
     <Switch>
@@ -34,6 +37,9 @@ export default function Routes() {
         component={RegistrationForm}
         isPrivate
       />
+
+      <Route path="/students" component={Students} isPrivate />
+      <Route path="/new_student" component={StudentForm} isPrivate />
       {/* }<Route path="/" component={() => <h1>404</h1>} />{ */}
     </Switch>
   );

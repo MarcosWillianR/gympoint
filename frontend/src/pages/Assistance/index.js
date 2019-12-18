@@ -6,7 +6,7 @@ import { Title } from '~/styles/sharedStyles';
 import AssistAnswer from './AssistAnswer';
 
 export default function Assistance() {
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleModal = e => {
     const modalWrapper = document.querySelector('.modal-wrapper');
