@@ -52,7 +52,7 @@ class MobileSessionController {
         id,
         name,
       },
-      token: jwt.sign({ id }, AuthConfig.secretKey, {
+      token: jwt.sign({ id, name }, AuthConfig.secretKey, {
         expiresIn: AuthConfig.expiresIn,
       }),
     });
