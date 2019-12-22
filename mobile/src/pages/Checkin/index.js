@@ -13,7 +13,7 @@ import {
 export default function Checkin() {
   return (
     <Container>
-      <NewCheckinButton>Novo check-in</NewCheckinButton>
+      <NewCheckinButton onPress={() => {}}>Novo check-in</NewCheckinButton>
       <CheckWrapper>
         <CheckNumber>Check-in #7</CheckNumber>
         <CheckDate>Hoje às 14h</CheckDate>
