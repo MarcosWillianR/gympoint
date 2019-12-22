@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'gympoint-mobile',
       storage: AsyncStorage,
-      whitelist: ['auth'],
+      whitelist: ['auth', 'student'],
     },
     reducers
   );
