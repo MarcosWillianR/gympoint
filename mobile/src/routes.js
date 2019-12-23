@@ -1,31 +1,29 @@
+import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
+/** Switch navigator */
 import SignIn from '~/pages/SignIn';
 
+/** Stack navigation with Bottom tab */
 import Checkin from '~/pages/Checkin';
-import HelpRequests from '~/pages/HelpRequests';
+import Main from '~/pages/HelpRequests/Main';
 
+/** Stack navigation pages */
+import NewHelpRequest from '~/pages/HelpRequests/NewHelpRequest';
+import HelpRequestAnswer from '~/pages/HelpRequests/HelpRequestAnswer';
+
+/** top background image */
 import HeaderLogo from '~/components/HeaderLogo';
 
-const bottomNavigator = createBottomTabNavigator(
-  {
-    Checkin,
-    HelpRequests,
-  },
-  {
-    tabBarOptions: {
-      keyboardHidesTabBar: true,
-      activeTintColor: '#ee4e62',
-      inactiveTintColor: 'rgba(0,0,0, 0.4)',
-      style: {
-        backgroundColor: '#fff',
-        padding: 4,
-      },
-    },
-  }
-);
+/** Stack Navigation Header default */
+const defaultNavigationOptions = {
+  headerBackground: HeaderLogo,
+  headerBackImage: <Icon name="navigate-before" size={24} color="#444" />,
+};
 
 export default (signedIn = false) =>
   createAppContainer(
@@ -34,13 +32,54 @@ export default (signedIn = false) =>
         Sign: createSwitchNavigator({
           SignIn,
         }),
-        App: createStackNavigator(
+        App: createBottomTabNavigator(
           {
-            tabs: bottomNavigator,
+            Checkin: {
+              screen: createStackNavigator(
+                {
+                  Checkin,
+                },
+                {
+                  navigationOptions: {
+                    tabBarLabel: 'Check-ins',
+                    tabBarIcon: ({ tintColor }) => (
+                      <Icon name="edit-location" size={20} color={tintColor} />
+                    ),
+                  },
+                  defaultNavigationOptions,
+                }
+              ),
+            },
+            HelpRequests: {
+              screen: createStackNavigator(
+                {
+                  Main,
+                  NewHelpRequest,
+                  HelpRequestAnswer,
+                },
+                {
+                  navigationOptions: {
+                    tabBarLabel: 'Pedir ajuda',
+                    tabBarIcon: ({ tintColor }) => (
+                      <Icon name="live-help" size={22} color={tintColor} />
+                    ),
+                  },
+                  defaultNavigationOptions,
+                }
+              ),
+            },
           },
           {
-            defaultNavigationOptions: {
-              headerBackground: HeaderLogo,
+            tabBarOptions: {
+              keyboardHidesTabBar: true,
+              activeTintColor: '#ee4e62',
+              inactiveTintColor: 'rgba(0,0,0, 0.4)',
+              style: {
+                backgroundColor: '#fff',
+                paddingTop: 10,
+                paddingBottom: 10,
+                height: 60,
+              },
             },
           }
         ),
