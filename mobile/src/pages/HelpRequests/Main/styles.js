@@ -2,19 +2,16 @@ import styled from 'styled-components/native';
 
 import Button from '~/components/Button';
 
-export const Container = styled.View`
-  padding: 20px;
-`;
-
 export const NewHelpRequestButton = styled(Button)`
   margin: 10px 0 20px 0;
 `;
 
-export const HelpRequestWrapper = styled.View`
+export const HelpRequestWrapperButton = styled.TouchableOpacity`
+  background: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-bottom: 10px;
-
+  min-height: 140px;
   padding: 15px;
 `;
 

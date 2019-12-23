@@ -1,9 +1,8 @@
 import React from 'react';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Background from '~/components/Background';
 
 import {
-  Container,
   NewCheckinButton,
   CheckWrapper,
   CheckNumber,
@@ -12,7 +11,7 @@ import {
 
 export default function Checkin() {
   return (
-    <Container>
+    <Background>
       <NewCheckinButton onPress={() => {}}>Novo check-in</NewCheckinButton>
       <CheckWrapper>
         <CheckNumber>Check-in #7</CheckNumber>
@@ -48,13 +47,6 @@ export default function Checkin() {
         <CheckNumber>Check-in #1</CheckNumber>
         <CheckDate>Há 3 meses</CheckDate>
       </CheckWrapper>
-    </Container>
+    </Background>
   );
 }
-
-Checkin.navigationOptions = {
-  tabBarLabel: 'Check-ins',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="edit-location" size={20} color={tintColor} />
-  ),
-};

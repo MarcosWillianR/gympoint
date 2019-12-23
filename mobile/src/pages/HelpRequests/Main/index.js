@@ -1,11 +1,11 @@
 import React from 'react';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Background from '~/components/Background';
 
 import {
-  Container,
   NewHelpRequestButton,
-  HelpRequestWrapper,
+  HelpRequestWrapperButton,
   Header,
   AnswerStatus,
   AnswerDate,
@@ -15,14 +15,15 @@ import {
 
 export default function HelpRequests({ navigation }) {
   return (
-    <Container>
+    <Background>
       <NewHelpRequestButton
         onPress={() => navigation.navigate('NewHelpRequest')}
       >
         Novo pedido de auxílio
       </NewHelpRequestButton>
-
-      <HelpRequestWrapper>
+      <HelpRequestWrapperButton
+        onPress={() => navigation.navigate('HelpRequestAnswer')}
+      >
         <Header>
           <AnswerStatus>
             <Icon name="check-circle" size={14} color="#999999" />
@@ -34,9 +35,9 @@ export default function HelpRequests({ navigation }) {
           Olá pessoal da academia, gostaria de saber se quando acordar devo
           ingerir batata doce e frango logo de primeira, preparar as...
         </Question>
-      </HelpRequestWrapper>
+      </HelpRequestWrapperButton>
 
-      <HelpRequestWrapper>
+      <HelpRequestWrapperButton>
         <Header>
           <AnswerStatus>
             <Icon name="check-circle" size={14} color="#42cb59" />
@@ -48,14 +49,7 @@ export default function HelpRequests({ navigation }) {
           Olá pessoal da academia, gostaria de saber se quando acordar devo
           ingerir batata doce e frango logo de primeira, preparar as...
         </Question>
-      </HelpRequestWrapper>
-    </Container>
+      </HelpRequestWrapperButton>
+    </Background>
   );
 }
-
-HelpRequests.navigationOptions = {
-  tabBarLabel: 'Pedir ajuda',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="live-help" size={22} color={tintColor} />
-  ),
-};
