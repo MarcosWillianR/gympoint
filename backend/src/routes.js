@@ -40,6 +40,8 @@ routes.delete(
   RegistrationController.delete
 );
 
+// routes.get('/help-orders', authMiddleware, HelpOrdersController.index)
+
 /**
  * Rotas FRONT MOBILE
  */
