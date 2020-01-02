@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
-import AuthConfig from '../../configs/Auth';
+import authConfig from '../../configs/Auth';
 
 export default async (req, res, next) => {
   const bearerToken = req.headers.authorization;
@@ -13,7 +13,7 @@ export default async (req, res, next) => {
   const [, token] = bearerToken.split(' ');
 
   try {
-    const decoded = await promisify(jwt.verify)(token, AuthConfig.secretKey);
+    const decoded = await promisify(jwt.verify)(token, authConfig.secretKey);
 
     req.studentId = decoded.id;
     req.studentName = decoded.name;

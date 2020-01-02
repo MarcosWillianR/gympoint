@@ -1,10 +1,15 @@
 import { Router } from 'express';
 
+/** Controllers FRONT WEB */
 import SessionController from './app/controllers/SessionController';
 import StudentController from './app/controllers/StudentController';
 import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
+
+/** Controllers FRONT MOBILE */
 import MobileSessionController from './app/controllers/MobileSessionController';
+import MobileHelpOrdersController from './app/controllers/MobileHelpOrdersController';
+import MobileCheckInsController from './app/controllers/MobileCheckInsController';
 
 import authMiddleware from './app/middlewares/auth';
 import mobileAuthMiddleware from './app/middlewares/mobileAuth';
@@ -45,6 +50,34 @@ routes.delete(
 /**
  * Rotas FRONT MOBILE
  */
-routes.get('/students/:student_id/checkins', mobileAuthMiddleware);
+routes.get(
+  '/students/:student_id/checkins',
+  mobileAuthMiddleware,
+  MobileCheckInsController.index
+);
+
+routes.post(
+  '/students/:student_id/checkins',
+  mobileAuthMiddleware,
+  MobileCheckInsController.store
+);
+
+routes.get(
+  '/students/:student_id/help-orders',
+  mobileAuthMiddleware,
+  MobileHelpOrdersController.index
+);
+
+routes.get(
+  '/students/:student_id/help-orders/:question_id',
+  mobileAuthMiddleware,
+  MobileHelpOrdersController.show
+);
+
+routes.post(
+  '/students/:student_id/help-orders',
+  mobileAuthMiddleware,
+  MobileHelpOrdersController.store
+);
 
 export default routes;
