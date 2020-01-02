@@ -1,4 +1,4 @@
-import { takeLatest, put, call, all, delay } from 'redux-saga/effects';
+import { takeLatest, put, call, all } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 
 import api from '~/services/api';
@@ -15,8 +15,6 @@ export function* signRequest({ payload }) {
 
     const { student, token } = response.data;
 
-    // yield delay(3000);
-
     yield put(singInSuccess(student, token));
   } catch (err) {
     Alert.alert('Falha no login', 'Erro ao tentar realizar login no APP');
@@ -25,4 +23,17 @@ export function* signRequest({ payload }) {
   }
 }
 
-export default all([takeLatest('@auth/SIGN_IN_REQUEST', signRequest)]);
+export function sendToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
+export default all([
+  takeLatest('@auth/SIGN_IN_REQUEST', signRequest),
+  takeLatest('persist/REHYDRATE', sendToken),
+]);

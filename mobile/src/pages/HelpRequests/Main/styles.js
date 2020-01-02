@@ -45,3 +45,5 @@ export const Question = styled.Text`
   color: #666;
   line-height: 26px;
 `;
+
+export const HelpRequestList = styled.FlatList``;

@@ -29,3 +29,9 @@ export const CheckDate = styled.Text`
   color: #666;
   font-size: 14px;
 `;
+
+export const LogOutButton = styled(Button)`
+  /* margin: 10px 0 20px 0; */
+`;
+
+export const CheckList = styled.FlatList``;
