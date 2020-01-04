@@ -5,6 +5,7 @@ import SessionController from './app/controllers/SessionController';
 import StudentController from './app/controllers/StudentController';
 import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
+import WebHelpOrdersController from './app/controllers/WebHelpOrdersController';
 
 /** Controllers FRONT MOBILE */
 import MobileSessionController from './app/controllers/MobileSessionController';
@@ -45,7 +46,12 @@ routes.delete(
   RegistrationController.delete
 );
 
-// routes.get('/help-orders', authMiddleware, HelpOrdersController.index)
+routes.get('/help-orders', authMiddleware, WebHelpOrdersController.index);
+routes.put(
+  '/help-orders/:question_id/answer',
+  authMiddleware,
+  WebHelpOrdersController.update
+);
 
 /**
  * Rotas FRONT MOBILE
