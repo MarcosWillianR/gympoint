@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert } from 'react-native';
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
+
 import {
   Container,
   Question,
@@ -28,7 +31,22 @@ export default function HelpRequestAnswer({ navigation }) {
           `/students/${studentId}/help-orders/${question_id}`
         );
 
-        setQuestion(response.data);
+        const dateFormatted = response.data.answer_at
+          ? format(
+              parseISO(response.data.answer_at),
+              "dd 'de' MMMM 'às' HH':'mm",
+              {
+                locale: pt,
+              }
+            )
+          : null;
+
+        const data = {
+          ...response.data,
+          dateFormatted,
+        };
+
+        setQuestion(data);
       } catch (err) {
         Alert.alert('Erro', 'Erro ao tentar listar suas respostas');
       }
@@ -43,7 +61,7 @@ export default function HelpRequestAnswer({ navigation }) {
         <Question>
           <Header>
             <Title>Pergunta</Title>
-            <Date>{question.answer_at ? question.answer_at : ''}</Date>
+            <Date>{question.answer_at ? question.dateFormatted : ''}</Date>
           </Header>
           <Text>{question.question}</Text>
         </Question>

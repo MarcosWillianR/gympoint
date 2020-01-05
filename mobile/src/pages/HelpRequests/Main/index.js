@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { format, parseISO } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
@@ -27,7 +29,28 @@ export default function HelpRequests({ navigation }) {
       try {
         const response = await api.get(`/students/${studentId}/help-orders`);
 
-        setQuestions(response.data);
+        const data = response.data.map(question => {
+          if (question.answer_at) {
+            const dateFormatted = format(
+              parseISO(question.answer_at),
+              "dd 'de' MMMM 'às' HH':'mm",
+              {
+                locale: pt,
+              }
+            );
+
+            return {
+              ...question,
+              dateFormatted,
+            };
+          }
+
+          return {
+            ...question,
+          };
+        });
+
+        setQuestions(data);
       } catch (err) {
         Alert.alert('Erro', 'Erro ao tentar listar suas perguntas');
       }
@@ -64,7 +87,9 @@ export default function HelpRequests({ navigation }) {
                   {item.answer_at ? 'Respondido' : 'Sem resposta'}
                 </AnswerStatusText>
               </AnswerStatus>
-              <AnswerDate>{item.answer_at ? item.answer_at : null}</AnswerDate>
+              <AnswerDate>
+                {item.answer_at ? item.dateFormatted : null}
+              </AnswerDate>
             </Header>
             <Question>{item.question}</Question>
           </HelpRequestWrapperButton>
