@@ -11,20 +11,18 @@ import Mail from '../../lib/Mail';
 class RegistrationController {
   async index(req, res) {
     const registrations = await Registration.findAll({
-      order: [Plan, 'price'],
+      attributes: ['id', 'start_date', 'end_date', 'active', 'price'],
+      include: [
+        {
+          model: Student,
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Plan,
+          attributes: ['title'],
+        },
+      ],
     });
-
-    // attributes: ['id', 'start_date', 'end_date', 'active', 'price'],
-    //   include: [
-    //     {
-    //       model: Student,
-    //       attributes: ['id', 'name'],
-    //     },
-    //     {
-    //       model: Plan,
-    //       attributes: ['title'],
-    //     },
-    //   ],
 
     return res.json(registrations);
   }

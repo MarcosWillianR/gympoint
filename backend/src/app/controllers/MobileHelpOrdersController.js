@@ -1,4 +1,5 @@
 import HelpOrders from '../schemas/HelpOrders';
+import Student from '../models/Student';
 
 class MobileHelpOrdersController {
   async index(req, res) {
@@ -24,8 +25,11 @@ class MobileHelpOrdersController {
   async store(req, res) {
     const { student_id } = req.params;
 
+    const { name: student_name } = await Student.findByPk(student_id);
+
     const answer = await HelpOrders.create({
       student_id,
+      student_name,
       question: req.body.question,
     });
 

@@ -6,6 +6,10 @@ const HelpOrdersSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    student_name: {
+      type: String,
+      required: true,
+    },
     question: {
       type: String,
       required: true,
