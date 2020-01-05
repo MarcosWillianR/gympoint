@@ -2,22 +2,27 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
 
+import api from '~/services/api';
 import history from '~/services/history';
 
-import { studentsCreateRequest } from '~/store/modules/students/actions';
+import {
+  studentsCreateRequest,
+  studentsEditRequest,
+} from '~/store/modules/students/actions';
+
+import toast from '~/util/toastStyle';
 
 export default function StudentForm({ match }) {
   const isEditPage = history.location.pathname.match(/edit_student/g);
-  const { plan_id } = match.params;
+  const { student_id } = match.params;
 
-  // const [onePlan, setOnePlan] = useState({});
+  const [oneStudent, setOneStudent] = useState({});
   const dispatch = useDispatch();
-  // const plans = useSelector(state => state.plans.plans);
 
   const handleSubmit = ({
     student_name,
@@ -27,9 +32,16 @@ export default function StudentForm({ match }) {
     student_height,
   }) => {
     if (isEditPage) {
-      // dispatch(
-      //   plansEditRequest(plan_id, plan_title, plan_duration, plan_price)
-      // );
+      dispatch(
+        studentsEditRequest(
+          student_name,
+          student_email,
+          student_age,
+          student_weight,
+          student_height,
+          student_id
+        )
+      );
     } else {
       dispatch(
         studentsCreateRequest(
@@ -43,14 +55,20 @@ export default function StudentForm({ match }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (isEditPage) {
-  //     if (!plans.length) {
-  //       history.push('/plans');
-  //     }
-  //     setOnePlan(plans.filter(plan => plan.id === Number(plan_id))[0]);
-  //   }
-  // }, []); //eslint-disable-line
+  useEffect(() => {
+    async function getOneStudent() {
+      if (isEditPage && student_id) {
+        try {
+          const response = await api.get(`/students/${student_id}`);
+
+          setOneStudent(response.data);
+        } catch (err) {
+          toast('Erro ao tentar listar o aluno', '#e54b64', '#fff', '#fff');
+        }
+      }
+    }
+    getOneStudent();
+  }, []); //eslint-disable-line
 
   return (
     <Container>
@@ -73,29 +91,33 @@ export default function StudentForm({ match }) {
             <label>Nome completo</label>
             <Input
               type="text"
-              // value={(onePlan && onePlan.title) || ''}
+              value={(oneStudent && oneStudent.name) || ''}
               name="student_name"
-              // onChange={e => setOnePlan({ ...onePlan, title: e.target.value })}
+              onChange={e =>
+                setOneStudent({ ...oneStudent, name: e.target.value })
+              }
             />
           </div>
           <div className="fully">
             <label>Endereço de e-mail</label>
             <Input
               type="email"
-              // value={(onePlan && onePlan.title) || ''}
+              value={(oneStudent && oneStudent.email) || ''}
               name="student_email"
-              // onChange={e => setOnePlan({ ...onePlan, title: e.target.value })}
+              onChange={e =>
+                setOneStudent({ ...oneStudent, email: e.target.value })
+              }
             />
           </div>
           <div className="one_third">
             <label>Idade</label>
             <Input
               type="text"
-              // value={(onePlan && onePlan.duration) || ''}
+              value={(oneStudent && oneStudent.age) || ''}
               name="student_age"
-              // onChange={e =>
-              //   setOnePlan({ ...onePlan, duration: e.target.value })
-              // }
+              onChange={e =>
+                setOneStudent({ ...oneStudent, age: e.target.value })
+              }
             />
           </div>
           <div className="one_third">
@@ -104,17 +126,22 @@ export default function StudentForm({ match }) {
             </label>
             <Input
               type="text"
-              // value={(onePlan && onePlan.price) || ''}
+              value={(oneStudent && oneStudent.weight) || ''}
               name="student_weight"
-              // onChange={e => setOnePlan({ ...onePlan, price: e.target.value })}
+              onChange={e =>
+                setOneStudent({ ...oneStudent, weight: e.target.value })
+              }
             />
           </div>
           <div className="one_third">
             <label>Altura</label>
             <Input
               type="text"
-              // value={(onePlan && onePlan.totalPrice) || ''}
+              value={(oneStudent && oneStudent.height) || ''}
               name="student_height"
+              onChange={e =>
+                setOneStudent({ ...oneStudent, height: e.target.value })
+              }
             />
           </div>
         </Form>

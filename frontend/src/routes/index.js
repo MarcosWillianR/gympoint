@@ -40,6 +40,12 @@ export default function Routes() {
 
       <Route path="/students" component={Students} isPrivate />
       <Route path="/new_student" component={StudentForm} isPrivate />
+      <Route
+        path="/edit_student/:student_id"
+        component={StudentForm}
+        isPrivate
+      />
+
       {/* }<Route path="/" component={() => <h1>404</h1>} />{ */}
     </Switch>
   );

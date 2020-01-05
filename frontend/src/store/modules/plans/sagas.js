@@ -10,7 +10,7 @@ export function* createPlan({ payload }) {
   try {
     const { title, duration, price } = payload;
 
-    const response = yield call(api.post, '/plans', {
+    yield call(api.post, '/plans', {
       title,
       duration,
       price,
@@ -18,9 +18,7 @@ export function* createPlan({ payload }) {
 
     yield put(plansSuccess());
 
-    if (response.status === 200) {
-      history.push('/plans');
-    }
+    history.push('/plans');
   } catch (err) {
     toast(
       'Falha ao tentar criar um novo plano, verifique os dados e tente novamente',
@@ -37,7 +35,7 @@ export function* editPlan({ payload }) {
   try {
     const { id, title, duration, price } = payload;
 
-    const response = yield call(api.put, `/plans/${id}`, {
+    yield call(api.put, `/plans/${id}`, {
       title,
       duration,
       price,
@@ -45,9 +43,7 @@ export function* editPlan({ payload }) {
 
     yield put(plansSuccess());
 
-    if (response.status === 200) {
-      history.push('/plans');
-    }
+    history.push('/plans');
   } catch (err) {
     toast('Erro ao tentar editar o Plano', '#e54b64', '#fff', '#fff');
 
@@ -58,13 +54,11 @@ export function* editPlan({ payload }) {
 export function* deletePlan({ payload }) {
   try {
     const { id } = payload;
-    const response = yield call(api.delete, `/plans/${id}`);
+    yield call(api.delete, `/plans/${id}`);
 
     yield put(plansSuccess());
 
-    if (response.status === 200) {
-      window.location.reload();
-    }
+    window.location.reload();
   } catch (err) {
     toast(
       'Erro ao tentar deletar o Plano, ele está em uso?',

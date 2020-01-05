@@ -26,7 +26,14 @@ routes.post('/mobile-sessions', MobileSessionController.store);
  */
 
 routes.get('/students', authMiddleware, StudentController.index);
+routes.get('/students/:student_id', authMiddleware, StudentController.show);
 routes.post('/students', authMiddleware, StudentController.store);
+routes.put('/students/:student_id', authMiddleware, StudentController.update);
+routes.delete(
+  '/students/:student_id',
+  authMiddleware,
+  StudentController.delete
+);
 
 routes.get('/plans', authMiddleware, PlanController.index);
 routes.get('/plans/:plan_id', authMiddleware, PlanController.show);

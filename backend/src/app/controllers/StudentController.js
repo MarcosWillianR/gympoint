@@ -45,6 +45,58 @@ class StudentController {
       height,
     });
   }
+
+  async show(req, res) {
+    const { student_id } = req.params;
+
+    const student = await Student.findByPk(student_id);
+
+    if (!student) {
+      return res.status(400).json({ error: 'Student not found' });
+    }
+
+    return res.json(student);
+  }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email(),
+      age: Yup.number().integer(),
+      weight: Yup.number(),
+      height: Yup.number(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
+    const { student_id } = req.params;
+
+    const student = await Student.findByPk(student_id);
+
+    if (!student) {
+      return res.status(400).json({ error: 'Student dont exists' });
+    }
+
+    await student.update(req.body);
+
+    return res.json({ message: 'Student successfuly updated' });
+  }
+
+  async delete(req, res) {
+    const { student_id } = req.params;
+
+    const student = await Student.findByPk(student_id);
+
+    if (!student) {
+      return res.status(400).json({ error: 'Student dont exists' });
+    }
+
+    await student.destroy();
+
+    return res.json({ message: 'Successfuly student deleted' });
+  }
 }
 
 export default new StudentController();
