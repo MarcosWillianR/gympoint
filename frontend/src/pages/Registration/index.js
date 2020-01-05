@@ -1,28 +1,70 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdCheckCircle } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { parseISO } from 'date-fns';
 
 import { Container, Header, Wrapper, RegistrationDesc } from './styles';
 import { Title, RegisterButton } from '~/styles/sharedStyles';
 
 import history from '~/services/history';
+import api from '~/services/api';
+
+import toast from '~/util/toastStyle';
+import { priceFormatter, dateListFormat } from '~/util/formater';
 
 import Loading from '~/components/Loading';
 
-import {
-  getAllRequest,
-  registrationDeleteRequest,
-} from '~/store/modules/registration/actions';
+import { registrationDeleteRequest } from '~/store/modules/registration/actions';
 
 export default function Registration() {
   const dispatch = useDispatch();
-  const registrations = useSelector(state => state.registration.registrations);
-  const loading = useSelector(state => state.registration.loading);
+  const [registrations, setRegistrations] = useState([]);
 
   useEffect(() => {
-    dispatch(getAllRequest());
-  }, []) // eslint-disable-line
+    async function getAllRegistrations() {
+      try {
+        const response = await api.get('/registrations');
+
+        const data = response.data.map(registration => {
+          const {
+            active,
+            id,
+            start_date,
+            end_date,
+            price,
+            Student,
+            Plan,
+          } = registration;
+
+          const priceFormatted = priceFormatter(price);
+          const list_end_date_formatted = dateListFormat(end_date);
+          const start_date_formatted = dateListFormat(start_date);
+
+          return {
+            active,
+            id,
+            Student,
+            start_date: parseISO(start_date),
+            Plan,
+            priceFormatted,
+            list_end_date_formatted,
+            start_date_formatted,
+          };
+        });
+
+        setRegistrations(data);
+      } catch (error) {
+        toast(
+          'Falha ao tentar listar as matrículas',
+          '#e54b64',
+          '#fff',
+          '#fff'
+        );
+      }
+    }
+    getAllRegistrations();
+  }, []); // eslint-disable-line
 
   const handleDelete = registration_id => {
     const confirmDelete = window.confirm(
@@ -52,7 +94,7 @@ export default function Registration() {
         <strong>Término</strong>
         <strong>Ativa</strong>
 
-        {loading ? (
+        {!registrations.length ? (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />

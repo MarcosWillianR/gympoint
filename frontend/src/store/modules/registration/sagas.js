@@ -4,19 +4,7 @@ import history from '~/services/history';
 
 import toast from '~/util/toastStyle';
 
-import { getAllSuccess, registrationFailed } from './actions';
-
-export function* getAll() {
-  try {
-    const response = yield call(api.get, '/registrations');
-
-    yield put(getAllSuccess(response.data));
-  } catch (err) {
-    toast('Falha ao tentar listar as matrículas', '#e54b64', '#fff', '#fff');
-
-    yield put(registrationFailed());
-  }
-}
+import { registrationFailed } from './actions';
 
 export function* registrationDelete({ payload }) {
   try {
@@ -76,7 +64,6 @@ export function* registrationCreate({ payload }) {
 }
 
 export default all([
-  takeLatest('@registration/GET_ALL_REQUEST', getAll),
   takeLatest('@registration/REGISTRATION_DELETE_REQUEST', registrationDelete),
   takeLatest('@registration/REGISTRATION_UPDATE_REQUEST', registrationUpdate),
   takeLatest('@registration/REGISTRATION_CREATE_REQUEST', registrationCreate),

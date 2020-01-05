@@ -35,6 +35,11 @@ routes.put('/plans/:plan_id', authMiddleware, PlanController.update);
 routes.delete('/plans/:plan_id', authMiddleware, PlanController.delete);
 
 routes.get('/registrations', authMiddleware, RegistrationController.index);
+routes.get(
+  '/registrations/:reg_id',
+  authMiddleware,
+  RegistrationController.show
+);
 routes.post('/registrations', authMiddleware, RegistrationController.store);
 routes.put(
   '/registrations/:reg_id',
