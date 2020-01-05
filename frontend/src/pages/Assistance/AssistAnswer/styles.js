@@ -19,6 +19,7 @@ export const Container = styled.div`
 export const AnswerWrapper = styled.div`
   width: 100%;
   max-width: 450px;
+  min-height: 370px;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -77,5 +78,20 @@ export const AnswerWrapper = styled.div`
     &:hover {
       background-color: ${darken(0.03, '#e54b64')};
     }
+  }
+`;
+
+export const AnswerStatusWrapper = styled.div`
+  min-height: 370px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+
+  h3 {
+    margin-bottom: 30px;
+    color: #444;
+    font-size: 18px;
   }
 `;

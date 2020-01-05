@@ -1,36 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Container, AnswerWrapper } from './styles';
+import { Container, AnswerWrapper, AnswerStatusWrapper } from './styles';
 
-export default function AssistAnswer({ handleModalTarget, visible }) {
+import { createAnswerRequest } from '~/store/modules/assist/actions';
+
+import Loading from '~/components/Loading';
+
+export default function AssistAnswer({
+  handleModalTarget,
+  visible,
+  questionData,
+}) {
   const dispatch = useDispatch();
+  const message = useSelector(state => state.assist.message);
 
-  const handleSubmit = data => {
-    console.log(data);
+  const handleSubmit = ({ instructor_answer }) => {
+    dispatch(createAnswerRequest(instructor_answer, questionData._id));
   };
 
   return (
     <Container onClick={e => handleModalTarget(e)} visible={visible}>
       <AnswerWrapper className="modal-wrapper">
-        <h2>Pergunta do Aluno</h2>
-        <p>
-          Olá pessoal da academia, gostaria de saber se quando acordar devo
-          ingerir batata doce e frango logo de primeira, preparar as marmitas e
-          lotar a geladeira? Dou um pico de insulina e jogo o hipercalórico?
-        </p>
-        <Form onSubmit={handleSubmit}>
-          <strong>Sua resposta</strong>
-          <Input
-            multiline
-            name="instructor_answer"
-            type="text"
-            placeholder="responde aqui..."
-          />
-          <button type="submit">Responder aluno</button>
-        </Form>
+        {message ? (
+          <AnswerStatusWrapper>
+            <h3>{message}</h3>
+            <Loading />
+          </AnswerStatusWrapper>
+        ) : (
+          <>
+            <h2>Pergunta do Aluno</h2>
+            <p>{questionData ? questionData.question : ''}</p>
+            <Form onSubmit={handleSubmit}>
+              <strong>Sua resposta</strong>
+              <Input
+                multiline
+                name="instructor_answer"
+                type="text"
+                placeholder="responde aqui..."
+              />
+              <button type="submit">Responder aluno</button>
+            </Form>
+          </>
+        )}
       </AnswerWrapper>
     </Container>
   );
@@ -39,6 +53,7 @@ export default function AssistAnswer({ handleModalTarget, visible }) {
 AssistAnswer.propTypes = {
   handleModalTarget: PropTypes.func,
   visible: PropTypes.bool.isRequired,
+  questionData: PropTypes.oneOfType([PropTypes.object]).isRequired,
 };
 
 AssistAnswer.defaultProps = {
