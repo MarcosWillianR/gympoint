@@ -6,23 +6,6 @@ import toast from '~/util/toastStyle';
 
 import { plansSuccess, plansFailure } from './actions';
 
-export function* getPlans() {
-  try {
-    const response = yield call(api.get, 'plans');
-
-    yield put(plansSuccess(response.data));
-  } catch (err) {
-    toast(
-      'Falha ao tentar listar os planos, tente dar um F5 na página ;)',
-      '#e54b64',
-      '#fff',
-      '#fff'
-    );
-
-    yield put(plansFailure());
-  }
-}
-
 export function* createPlan({ payload }) {
   try {
     const { title, duration, price } = payload;
@@ -32,6 +15,8 @@ export function* createPlan({ payload }) {
       duration,
       price,
     });
+
+    yield put(plansSuccess());
 
     if (response.status === 200) {
       history.push('/plans');
@@ -43,6 +28,8 @@ export function* createPlan({ payload }) {
       '#fff',
       '#fff'
     );
+
+    yield put(plansFailure());
   }
 }
 
@@ -56,11 +43,15 @@ export function* editPlan({ payload }) {
       price,
     });
 
+    yield put(plansSuccess());
+
     if (response.status === 200) {
       history.push('/plans');
     }
   } catch (err) {
     toast('Erro ao tentar editar o Plano', '#e54b64', '#fff', '#fff');
+
+    yield put(plansFailure());
   }
 }
 
@@ -68,6 +59,8 @@ export function* deletePlan({ payload }) {
   try {
     const { id } = payload;
     const response = yield call(api.delete, `/plans/${id}`);
+
+    yield put(plansSuccess());
 
     if (response.status === 200) {
       window.location.reload();
@@ -79,11 +72,12 @@ export function* deletePlan({ payload }) {
       '#fff',
       '#fff'
     );
+
+    yield put(plansFailure());
   }
 }
 
 export default all([
-  takeLatest('@plans/PLANS_REQUEST', getPlans),
   takeLatest('@plans/PLANS_CREATE_REQUEST', createPlan),
   takeLatest('@plans/PLANS_EDIT_REQUEST', editPlan),
   takeLatest('@plans/PLANS_DELETE_REQUEST', deletePlan),

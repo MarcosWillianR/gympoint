@@ -1,13 +1,6 @@
-export function plansRequest() {
-  return {
-    type: '@plans/PLANS_REQUEST',
-  };
-}
-
-export function plansSuccess(plans) {
+export function plansSuccess() {
   return {
     type: '@plans/PLANS_SUCCESS',
-    payload: { plans },
   };
 }
 

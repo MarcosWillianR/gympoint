@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
 
 import history from '~/services/history';
+import api from '~/services/api';
+
+import toast from '~/util/toastStyle';
+import { priceFormatter } from '~/util/formater';
 
 import {
   plansCreateRequest,
@@ -20,7 +24,6 @@ export default function PlanForm({ match }) {
 
   const [onePlan, setOnePlan] = useState({});
   const dispatch = useDispatch();
-  const plans = useSelector(state => state.plans.plans);
 
   const handleSubmit = ({ plan_title, plan_duration, plan_price }) => {
     if (isEditPage) {
@@ -33,12 +36,32 @@ export default function PlanForm({ match }) {
   };
 
   useEffect(() => {
-    if (isEditPage) {
-      if (!plans.length) {
-        history.push('/plans');
+    async function getOnePlan() {
+      if (isEditPage && plan_id) {
+        try {
+          const response = await api.get(`/plans/${plan_id}`);
+
+          const { duration, price, title } = response.data;
+
+          const textDurationFormat = duration > 1 ? 'meses' : 'mês';
+          const totalPrice = duration * price;
+
+          const data = {
+            title,
+            duration,
+            price,
+            totalPrice: priceFormatter(totalPrice),
+            priceFormatted: priceFormatter(price),
+            durationFormatted: `${duration} ${textDurationFormat}`,
+          };
+
+          setOnePlan(data);
+        } catch (err) {
+          toast('Erro ao tentar encontrar o plano', '#e54b64', '#fff', '#fff');
+        }
       }
-      setOnePlan(plans.filter(plan => plan.id === Number(plan_id))[0]);
     }
+    getOnePlan();
   }, []); //eslint-disable-line
 
   return (

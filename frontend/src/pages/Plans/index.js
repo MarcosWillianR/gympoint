@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { priceFormatter } from '~/util/formater';
 
-import {
-  plansRequest,
-  plansDeleteRequest,
-} from '~/store/modules/plans/actions';
+import { plansDeleteRequest } from '~/store/modules/plans/actions';
+
+import api from '~/services/api';
+import toast from '~/util/toastStyle';
 
 import { Header, Wrapper, PlansDesc } from './styles';
 import { Container, Title, RegisterButton } from '~/styles/sharedStyles';
@@ -19,16 +20,30 @@ export default function Plans() {
   const dispatch = useDispatch();
   const [plans, setPlans] = useState([]);
 
-  const getPlans = useSelector(state => state.plans.plans);
-  const loading = useSelector(state => state.plans.loading);
-
   useEffect(() => {
-    dispatch(plansRequest());
+    async function getPlans() {
+      try {
+        const response = await api.get('/plans');
+
+        const data = response.data.map(plan => {
+          const textDurationFormat = plan.duration > 1 ? 'meses' : 'mês';
+          const totalPrice = plan.duration * plan.price;
+
+          return {
+            ...plan,
+            totalPrice: priceFormatter(totalPrice),
+            priceFormatted: priceFormatter(plan.price),
+            durationFormatted: `${plan.duration} ${textDurationFormat}`,
+          };
+        });
+
+        setPlans(data);
+      } catch (err) {
+        toast('Erro ao tentar listar os planos', '#e54b64', '#fff', '#fff');
+      }
+    }
+    getPlans();
   }, []); // eslint-disable-line
-
-  useEffect(() => {
-    setPlans(getPlans);
-  }, [getPlans]);
 
   const handleDeletePlan = plan_id => {
     const confirmDelete = window.confirm(
@@ -56,7 +71,7 @@ export default function Plans() {
         <strong>Duração</strong>
         <strong>Valor p/ MÊS</strong>
 
-        {loading ? (
+        {!plans.length ? (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />
@@ -64,7 +79,7 @@ export default function Plans() {
           </>
         ) : null}
 
-        {!loading &&
+        {plans.length &&
           plans.map(plan => (
             <PlansDesc key={plan.id}>
               <span>{plan.title}</span>
