@@ -73,7 +73,7 @@ export default function StudentForm({ match }) {
   return (
     <Container>
       <Header>
-        <Title>Cadastro de plano</Title>
+        <Title>{isEditPage ? 'Edição' : 'Cadastro'} de aluno</Title>
         <div>
           <button type="button" onClick={() => history.goBack()}>
             <MdKeyboardArrowLeft size={22} color="#fff" />

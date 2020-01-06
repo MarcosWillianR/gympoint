@@ -67,7 +67,7 @@ export default function PlanForm({ match }) {
   return (
     <Container>
       <Header>
-        <Title>Cadastro de plano</Title>
+        <Title>{isEditPage ? 'Edição' : 'Cadastro'} de plano</Title>
         <div>
           <button type="button" onClick={() => history.goBack()}>
             <MdKeyboardArrowLeft size={22} color="#fff" />

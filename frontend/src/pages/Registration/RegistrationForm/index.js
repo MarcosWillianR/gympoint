@@ -126,7 +126,7 @@ export default function RegistrationForm({ match }) {
   return (
     <Container>
       <Header>
-        <Title>Cadastro de matrícula</Title>
+        <Title>{isEditPage ? 'Edição' : 'Cadastro'} de matrícula</Title>
         <div>
           <button type="button" onClick={() => history.goBack()}>
             <MdKeyboardArrowLeft size={22} color="#fff" />
