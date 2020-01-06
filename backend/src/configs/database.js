@@ -4,7 +4,7 @@ module.exports = {
   dialect: 'postgres',
   host: process.env.HOST,
   username: process.env.NAME,
-  password: process.env.PASS,
+  password: 'docker',
   database: 'gympoint',
   define: {
     timestamps: true,

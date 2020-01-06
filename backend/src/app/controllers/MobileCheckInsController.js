@@ -6,9 +6,7 @@ class MobileCheckInsController {
   async index(req, res) {
     const { student_id } = req.params;
 
-    const checkins = await CheckIns.find({ student_id }).sort({
-      createdAt: 'asc',
-    });
+    const checkins = await CheckIns.find({ student_id });
 
     return res.json(checkins);
   }
@@ -22,6 +20,7 @@ class MobileCheckInsController {
     const endWeek = endOfWeek(actualDate);
 
     const checkins = await CheckIns.find({
+      student_id,
       createdAt: {
         $gte: startWeek,
         $lte: endWeek,
