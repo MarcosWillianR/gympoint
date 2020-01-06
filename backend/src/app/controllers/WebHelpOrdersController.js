@@ -36,6 +36,11 @@ class WebHelpOrdersController {
       locale: pt,
     });
 
+    await question.update({
+      answer: req.body.answer,
+      answer_at: new Date(),
+    });
+
     await Mail.sendMail({
       to: `${student.name} <${student.email}>`,
       subject: 'Sua dúvida foi respondida',
@@ -46,11 +51,6 @@ class WebHelpOrdersController {
         question: student_question,
         answer: req.body.answer,
       },
-    });
-
-    await question.update({
-      answer: req.body.answer,
-      answer_at: new Date(),
     });
 
     return res.json({ message: 'Answer created succefuly' });
