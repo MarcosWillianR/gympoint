@@ -43,6 +43,24 @@ export default function Students() {
     }
   };
 
+  const handleSearch = async student_name => {
+    if (student_name) {
+      const result = new RegExp(student_name, 'g');
+
+      const student = students.filter(s => s.name.match(result));
+
+      setTimeout(() => setStudents(student), 500);
+    } else {
+      try {
+        const response = await api.get('/students');
+
+        setTimeout(() => setStudents(response.data), 500);
+      } catch (err) {
+        toast('Erro ao tentar listar os aluno', '#e54b64', '#fff', '#fff');
+      }
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -56,7 +74,11 @@ export default function Students() {
           </Link>
           <SearchWrapper>
             <MdSearch size={20} color="#999" />
-            <input type="text" placeholder="Em manutenção..." />
+            <input
+              type="text"
+              placeholder="Buscar pelo nome"
+              onChange={e => handleSearch(e.target.value)}
+            />
           </SearchWrapper>
         </div>
       </Header>
@@ -74,23 +96,24 @@ export default function Students() {
           </>
         ) : null}
 
-        {students.length &&
-          students.map(student => (
-            <PlansDesc key={student.id}>
-              <span>{student.name}</span>
-              <span>{student.email}</span>
-              <span>{student.age}</span>
-              <button
-                type="button"
-                onClick={() => history.push(`/edit_student/${student.id}`)}
-              >
-                editar
-              </button>
-              <button type="button" onClick={() => handleDelete(student.id)}>
-                apagar
-              </button>
-            </PlansDesc>
-          ))}
+        {students.length
+          ? students.map(student => (
+              <PlansDesc key={student.id}>
+                <span>{student.name}</span>
+                <span>{student.email}</span>
+                <span>{student.age}</span>
+                <button
+                  type="button"
+                  onClick={() => history.push(`/edit_student/${student.id}`)}
+                >
+                  editar
+                </button>
+                <button type="button" onClick={() => handleDelete(student.id)}>
+                  apagar
+                </button>
+              </PlansDesc>
+            ))
+          : null}
       </Wrapper>
     </Container>
   );
