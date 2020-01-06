@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import Sequelize from 'sequelize';
 import mongoose from 'mongoose';
 
@@ -26,7 +28,7 @@ class Database {
 
   mongo() {
     this.mongoConnection = mongoose.connect(
-      'mongodb://localhost:27016/gympoint',
+      `mongodb://${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}`,
       {
         useNewUrlParser: true,
         useFindAndModify: true,
