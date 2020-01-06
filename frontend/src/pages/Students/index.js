@@ -17,6 +17,7 @@ import { studentDeleteRequest } from '~/store/modules/students/actions';
 
 export default function Students() {
   const [students, setStudents] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function Students() {
           </Link>
           <SearchWrapper>
             <MdSearch size={20} color="#999" />
-            <input type="text" placeholder="Buscar aluno" />
+            <input type="text" placeholder="Em manutenção..." />
           </SearchWrapper>
         </div>
       </Header>
