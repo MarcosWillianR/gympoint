@@ -1,4 +1,8 @@
+import { format } from 'date-fns';
+import pt from 'date-fns/locale/pt-BR';
 import HelpOrders from '../schemas/HelpOrders';
+import Student from '../models/Student';
+import Mail from '../../lib/Mail';
 
 class WebHelpOrdersController {
   async index(req, res) {
@@ -23,6 +27,26 @@ class WebHelpOrdersController {
     if (!question) {
       return res.status(400).json({ error: 'Question not found' });
     }
+
+    const { question: student_question, student_id } = question;
+
+    const student = await Student.findByPk(student_id);
+
+    const answered_at_formatted = format(new Date(), "d 'de' MMMM 'de' yyyy", {
+      locale: pt,
+    });
+
+    await Mail.sendMail({
+      to: `${student.name} <${student.email}>`,
+      subject: 'Sua dúvida foi respondida',
+      template: 'answered',
+      context: {
+        student: student.name,
+        answered_at: answered_at_formatted,
+        question: student_question,
+        answer: req.body.answer,
+      },
+    });
 
     await question.update({
       answer: req.body.answer,

@@ -1,0 +1,52 @@
+<style>
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .description {
+    margin-right: 20px;
+    width: 100%;
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .description .row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .welcome__footer {
+    width: 100%;
+    margin-top: 30px;
+    border-radius: 6px;
+    color: #fff;
+    background:#E54B64;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+  }
+</style>
+<div class="welcome">
+  <strong>
+    Olá
+    <span style="text-transform: capitalize; color: #333;">{{ student }}</span>
+    !
+  </strong>
+  <p style="font-weight: bold;">Sua pergunta foi respondida!</p>
+
+  <div class="description">
+    <strong style="text-transform: uppercase; color: #E54B64;">dia da resposta</strong>
+    <strong style="text-transform: uppercase; color: #E54B64;">pergunta</strong>
+    <strong style="text-transform: uppercase; color: #E54B64;">resposta</strong>
+
+    <div class="row">
+      <span style="margin: 10px 0; color: #333;">{{ answered_at }}</span>
+      <span style="margin: 10px 0; color: #333;">{{ question }}</span>
+      <span style="margin: 10px 0; color: #333;">{{ answer }}</span>
+    </div>
+  </div>
+</div>
