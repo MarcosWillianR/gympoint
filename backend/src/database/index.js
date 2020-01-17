@@ -28,7 +28,7 @@ class Database {
 
   mongo() {
     this.mongoConnection = mongoose.connect(
-      `mongodb://${process.env.HOST}:${process.env.PORT}/${process.env.DATABASE}`,
+      `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`,
       {
         useNewUrlParser: true,
         useFindAndModify: true,
