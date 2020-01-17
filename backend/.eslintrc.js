@@ -3,8 +3,8 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ['airbnb-base', 'prettier'],
-  plugins: ['prettier'],
+  extends: ['airbnb-base', 'prettier', 'plugin:jest/recommended'],
+  plugins: ['prettier', 'jest'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -19,5 +19,10 @@ module.exports = {
     "no-param-reassign": "off", // Permite que receba um parâmetro e faça alterações, necessário por que o Sequelize manipula alguns dados assim.
     "camelcase": "off", // Vamos utilizar variavéis snake case (minha_Variavel) em alguns momentos.
     "no-unused-vars": ['error', { 'ArgsIgnorePattern': 'next' }], // Vamos ter que utilizar o parâmetro next as vezes, sem a necessidade de utilizá-lo (comum em middlewares)
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error",
   },
 };
