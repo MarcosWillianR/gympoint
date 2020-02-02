@@ -3,6 +3,7 @@
 
 # testing
 /__tests__/coverage
+/__tests__/database.sqlite
 
 # dotenv environment variables file
 .env

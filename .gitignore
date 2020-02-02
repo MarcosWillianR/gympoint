@@ -1,4 +1,0 @@
-**/node_modules
-backend/.env
-backend/.env.test
-backend/__tests__/coverage
