@@ -7,7 +7,7 @@
     "dev": "nodemon src/server.js",
     "lint": "npx eslint --fix src --ext .js",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test jest",
+    "test": "NODE_ENV=test jest -i --forceExit --detectOpenHandles",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "dependencies": {
@@ -36,10 +36,13 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "factory-girl": "^5.0.4",
+    "faker": "^4.1.0",
     "jest": "^24.9.0",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "sequelize-cli": "^5.5.1",
-    "sucrase": "^3.10.1"
+    "sucrase": "^3.10.1",
+    "supertest": "^4.0.2"
   }
 }
