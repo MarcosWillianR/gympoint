@@ -7,6 +7,9 @@ import PlanController from './app/controllers/PlanController';
 import RegistrationController from './app/controllers/RegistrationController';
 import WebHelpOrdersController from './app/controllers/WebHelpOrdersController';
 
+// User (admin) Controller
+import UserController from './app/controllers/UserController';
+
 /** Controllers FRONT MOBILE */
 import MobileSessionController from './app/controllers/MobileSessionController';
 import MobileHelpOrdersController from './app/controllers/MobileHelpOrdersController';
@@ -24,6 +27,8 @@ routes.post('/mobile-sessions', MobileSessionController.store);
 /**
  * Rotas FRONT WEB
  */
+
+routes.post('/test/admin-create', UserController.store); // only for tests
 
 routes.get('/students', authMiddleware, StudentController.index);
 routes.get('/students/:student_id', authMiddleware, StudentController.show);
