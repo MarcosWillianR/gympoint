@@ -93,4 +93,15 @@ describe('Plan', () => {
 
     expect(plans.body).toHaveLength(10);
   });
+
+  it('find an non-existent plan', async () => {
+    await factory.createMany('Plan', 10);
+
+    const plans = await request(app)
+      .get('/plans/11')
+      .set('Authorization', adminToken)
+      .expect(400);
+
+    expect(plans.body.error).toBe('Esse plano não existe.');
+  });
 });

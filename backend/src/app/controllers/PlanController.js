@@ -16,7 +16,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'Plan dont exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
     const { id, title, duration, price } = plan;
@@ -44,7 +44,7 @@ class PlanController {
     const plan = await Plan.findByPk(req.params.plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'This plan does not exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
     const edittedPlan = await plan.update(req.body);
@@ -58,7 +58,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'This plan does not exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
     /**
