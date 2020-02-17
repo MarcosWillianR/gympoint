@@ -50,4 +50,19 @@ describe('Plan', () => {
 
     expect(editPlan.body.title).toBe(edittedTitle);
   });
+
+  it('delete a created plan', async () => {
+    const planAttributes = await factory.attrs('Plan');
+
+    const newPlan = await request(app)
+      .post('/plans')
+      .set('Authorization', adminToken)
+      .send(planAttributes);
+
+    const deletedPlan = await request(app)
+      .delete(`/plans/${newPlan.body.id}`)
+      .set('Authorization', adminToken);
+
+    expect(deletedPlan.body.message).toBe('Plano removido com sucesso!');
+  });
 });
