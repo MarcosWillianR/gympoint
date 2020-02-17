@@ -18,6 +18,10 @@ import MobileCheckInsController from './app/controllers/MobileCheckInsController
 import authMiddleware from './app/middlewares/auth';
 import mobileAuthMiddleware from './app/middlewares/mobileAuth';
 
+// Validators FRONT WEB
+import validatePlanStore from './app/validators/PlanStore';
+import validatePlanUpdate from './app/validators/PlanUpdate';
+
 const routes = new Router();
 
 routes.post('/sessions', SessionController.store);
@@ -42,8 +46,13 @@ routes.delete(
 
 routes.get('/plans', authMiddleware, PlanController.index);
 routes.get('/plans/:plan_id', authMiddleware, PlanController.show);
-routes.post('/plans', authMiddleware, PlanController.store);
-routes.put('/plans/:plan_id', authMiddleware, PlanController.update);
+routes.post('/plans', authMiddleware, validatePlanStore, PlanController.store);
+routes.put(
+  '/plans/:plan_id',
+  authMiddleware,
+  validatePlanUpdate,
+  PlanController.update
+);
 routes.delete('/plans/:plan_id', authMiddleware, PlanController.delete);
 
 routes.get('/registrations', authMiddleware, RegistrationController.index);
