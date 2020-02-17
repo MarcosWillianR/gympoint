@@ -65,4 +65,32 @@ describe('Plan', () => {
 
     expect(deletedPlan.body.message).toBe('Plano removido com sucesso!');
   });
+
+  it('create a plan and list him', async () => {
+    const planTitle = 'Gympoint Diamond';
+    const planAttributes = await factory.attrs('Plan', {
+      title: planTitle,
+    });
+
+    const newPlan = await request(app)
+      .post('/plans')
+      .set('Authorization', adminToken)
+      .send(planAttributes);
+
+    const plan = await request(app)
+      .get(`/plans/${newPlan.body.id}`)
+      .set('Authorization', adminToken);
+
+    expect(plan.body.title).toBe(planTitle);
+  });
+
+  it('list all plans', async () => {
+    await factory.createMany('Plan', 10);
+
+    const plans = await request(app)
+      .get('/plans')
+      .set('Authorization', adminToken);
+
+    expect(plans.body).toHaveLength(10);
+  });
 });
