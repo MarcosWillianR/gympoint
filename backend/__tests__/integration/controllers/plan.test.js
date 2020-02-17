@@ -31,4 +31,23 @@ describe('Plan', () => {
 
     expect(newPlan.body).toHaveProperty('id');
   });
+
+  it('edit a created plan', async () => {
+    const edittedTitle = 'Gympoint Special';
+    const planAttributes = await factory.attrs('Plan', {
+      title: 'Christmas Special',
+    });
+
+    const newPlan = await request(app)
+      .post('/plans')
+      .set('Authorization', adminToken)
+      .send(planAttributes);
+
+    const editPlan = await request(app)
+      .put(`/plans/${newPlan.body.id}`)
+      .set('Authorization', adminToken)
+      .send({ title: edittedTitle });
+
+    expect(editPlan.body.title).toBe(edittedTitle);
+  });
 });

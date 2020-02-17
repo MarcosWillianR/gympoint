@@ -71,9 +71,9 @@ class PlanController {
       return res.status(400).json({ error: 'This plan does not exists' });
     }
 
-    await plan.update(req.body);
+    const edittedPlan = await plan.update(req.body);
 
-    return res.json({ message: 'plan updated successfully!' });
+    return res.json(edittedPlan);
   }
 
   async delete(req, res) {
