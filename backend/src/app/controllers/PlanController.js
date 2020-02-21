@@ -61,10 +61,6 @@ class PlanController {
       return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
-    /**
-     * Regra de negócio para verificar se o plano está em uso
-     * (da erro na hora de deletar se não tiver essa verificação)
-     */
     const planInUse = await Registration.findOne({
       where: {
         plan_id,
@@ -72,7 +68,9 @@ class PlanController {
     });
 
     if (planInUse) {
-      return res.status(400).json({ error: 'This plan is already in use' });
+      return res
+        .status(400)
+        .json({ error: 'Esse plano está sendo utilizado.' });
     }
 
     await plan.destroy();
