@@ -1,5 +1,3 @@
-import * as Yup from 'yup';
-
 import Plan from '../models/Plan';
 import Registration from '../models/Registration';
 
@@ -18,7 +16,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'Plan dont exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
     const { id, title, duration, price } = plan;
@@ -32,18 +30,6 @@ class PlanController {
   }
 
   async store(req, res) {
-    const schema = Yup.object().shape({
-      title: Yup.string().required(),
-      duration: Yup.number()
-        .integer()
-        .required(),
-      price: Yup.number().required(),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
-
     const { id, title, duration, price } = await Plan.create(req.body);
 
     return res.json({
@@ -55,20 +41,10 @@ class PlanController {
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
-      title: Yup.string(),
-      duration: Yup.number().integer(),
-      price: Yup.number(),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
-
     const plan = await Plan.findByPk(req.params.plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'This plan does not exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
     const edittedPlan = await plan.update(req.body);
@@ -82,13 +58,9 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'This plan does not exists' });
+      return res.status(400).json({ error: 'Esse plano não existe.' });
     }
 
-    /**
-     * Regra de negócio para verificar se o plano está em uso
-     * (da erro na hora de deletar se não tiver essa verificação)
-     */
     const planInUse = await Registration.findOne({
       where: {
         plan_id,
@@ -96,7 +68,9 @@ class PlanController {
     });
 
     if (planInUse) {
-      return res.status(400).json({ error: 'This plan is already in use' });
+      return res
+        .status(400)
+        .json({ error: 'Esse plano está sendo utilizado.' });
     }
 
     await plan.destroy();
