@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { addMonths, parseISO, format } from 'date-fns';
+import { addMonths, parseISO } from 'date-fns';
 import app from '../../../src/app';
 
 import factory from '../../factories';
