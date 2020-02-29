@@ -1,6 +1,5 @@
 import { addMonths, parseISO } from 'date-fns';
 import request from '../../utils/request';
-import app from '../../../src/app';
 
 import factory from '../../factories';
 
