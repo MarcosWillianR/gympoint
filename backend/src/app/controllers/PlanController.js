@@ -1,5 +1,8 @@
 import Plan from '../models/Plan';
 import Registration from '../models/Registration';
+import { pt_br } from '../../utils/validations';
+
+const defaultMessage = pt_br.plans;
 
 class PlanController {
   async index(req, res) {
@@ -13,20 +16,15 @@ class PlanController {
   async show(req, res) {
     const { plan_id } = req.params;
 
-    const plan = await Plan.findByPk(plan_id);
+    const plan = await Plan.findByPk(plan_id, {
+      attributes: ['id', 'title', 'duration', 'price'],
+    });
 
     if (!plan) {
-      return res.status(400).json({ error: 'Esse plano não existe.' });
+      return res.status(400).json({ error: defaultMessage.not_exists });
     }
 
-    const { id, title, duration, price } = plan;
-
-    return res.json({
-      id,
-      title,
-      duration,
-      price,
-    });
+    return res.json(plan);
   }
 
   async store(req, res) {
@@ -41,15 +39,22 @@ class PlanController {
   }
 
   async update(req, res) {
-    const plan = await Plan.findByPk(req.params.plan_id);
+    const { plan_id } = req.params;
+
+    const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'Esse plano não existe.' });
+      return res.status(400).json({ error: defaultMessage.not_exists });
     }
 
-    const edittedPlan = await plan.update(req.body);
+    const { id, title, duration, price } = await plan.update(req.body);
 
-    return res.json(edittedPlan);
+    return res.json({
+      id,
+      title,
+      duration,
+      price,
+    });
   }
 
   async delete(req, res) {
@@ -58,7 +63,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: 'Esse plano não existe.' });
+      return res.status(400).json({ error: defaultMessage.not_exists });
     }
 
     const planInUse = await Registration.findOne({
@@ -68,14 +73,12 @@ class PlanController {
     });
 
     if (planInUse) {
-      return res
-        .status(400)
-        .json({ error: 'Esse plano está sendo utilizado.' });
+      return res.status(400).json({ error: defaultMessage.being_used });
     }
 
     await plan.destroy();
 
-    return res.json({ message: 'Plano removido com sucesso!' });
+    return res.json({ message: defaultMessage.success_removed });
   }
 }
 
