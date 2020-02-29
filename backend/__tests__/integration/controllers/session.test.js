@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import '../../../src/bootstrap';
 import request from '../../utils/request';
 
 import { pt_br } from '../../../src/utils/validations';
