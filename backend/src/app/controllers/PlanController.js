@@ -2,7 +2,7 @@ import Plan from '../models/Plan';
 import Registration from '../models/Registration';
 import { pt_br } from '../../utils/validations';
 
-const defaultMessage = pt_br.plans;
+const defaultMessages = pt_br.plans;
 
 class PlanController {
   async index(req, res) {
@@ -21,7 +21,7 @@ class PlanController {
     });
 
     if (!plan) {
-      return res.status(400).json({ error: defaultMessage.not_exists });
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
     return res.json(plan);
@@ -44,7 +44,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: defaultMessage.not_exists });
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
     const { id, title, duration, price } = await plan.update(req.body);
@@ -63,7 +63,7 @@ class PlanController {
     const plan = await Plan.findByPk(plan_id);
 
     if (!plan) {
-      return res.status(400).json({ error: defaultMessage.not_exists });
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
     const planInUse = await Registration.findOne({
@@ -73,12 +73,12 @@ class PlanController {
     });
 
     if (planInUse) {
-      return res.status(400).json({ error: defaultMessage.being_used });
+      return res.status(400).json({ error: defaultMessages.being_used });
     }
 
     await plan.destroy();
 
-    return res.json({ message: defaultMessage.success_removed });
+    return res.json({ message: defaultMessages.success_removed });
   }
 }
 

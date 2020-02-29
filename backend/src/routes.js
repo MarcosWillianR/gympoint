@@ -21,10 +21,11 @@ import mobileAuthMiddleware from './app/middlewares/mobileAuth';
 // Validators FRONT WEB
 import validatePlanStore from './app/validators/PlanStore';
 import validatePlanUpdate from './app/validators/PlanUpdate';
+import validateSessionStore from './app/validators/SessionStore';
 
 const routes = new Router();
 
-routes.post('/sessions', SessionController.store);
+routes.post('/sessions', validateSessionStore, SessionController.store);
 
 routes.post('/mobile-sessions', MobileSessionController.store);
 
