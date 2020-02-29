@@ -1,5 +1,5 @@
-import request from 'supertest';
 import { addMonths, parseISO } from 'date-fns';
+import request from '../../utils/request';
 import app from '../../../src/app';
 
 import factory from '../../factories';
@@ -28,7 +28,7 @@ describe('Plan', () => {
   it('should be able to create a new Plan', async () => {
     const planAttributes = await factory.attrs('Plan');
 
-    const newPlan = await request(app)
+    const newPlan = await request
       .post('/plans')
       .set('Authorization', adminToken)
       .send(planAttributes);
@@ -42,12 +42,12 @@ describe('Plan', () => {
       title: 'Christmas Special',
     });
 
-    const newPlan = await request(app)
+    const newPlan = await request
       .post('/plans')
       .set('Authorization', adminToken)
       .send(planAttributes);
 
-    const editPlan = await request(app)
+    const editPlan = await request
       .put(`/plans/${newPlan.body.id}`)
       .set('Authorization', adminToken)
       .send({ title: edittedTitle });
@@ -58,12 +58,12 @@ describe('Plan', () => {
   it('delete a created plan', async () => {
     const planAttributes = await factory.attrs('Plan');
 
-    const newPlan = await request(app)
+    const newPlan = await request
       .post('/plans')
       .set('Authorization', adminToken)
       .send(planAttributes);
 
-    const deletedPlan = await request(app)
+    const deletedPlan = await request
       .delete(`/plans/${newPlan.body.id}`)
       .set('Authorization', adminToken);
 
@@ -76,12 +76,12 @@ describe('Plan', () => {
       title: planTitle,
     });
 
-    const newPlan = await request(app)
+    const newPlan = await request
       .post('/plans')
       .set('Authorization', adminToken)
       .send(planAttributes);
 
-    const plan = await request(app)
+    const plan = await request
       .get(`/plans/${newPlan.body.id}`)
       .set('Authorization', adminToken);
 
@@ -91,9 +91,7 @@ describe('Plan', () => {
   it('list all plans', async () => {
     await factory.createMany('Plan', 10);
 
-    const plans = await request(app)
-      .get('/plans')
-      .set('Authorization', adminToken);
+    const plans = await request.get('/plans').set('Authorization', adminToken);
 
     expect(plans.body).toHaveLength(10);
   });
@@ -101,7 +99,7 @@ describe('Plan', () => {
   it('find a non-existent plan', async () => {
     await factory.createMany('Plan', 10);
 
-    const plans = await request(app)
+    const plans = await request
       .get('/plans/11')
       .set('Authorization', adminToken)
       .expect(400);
@@ -112,7 +110,7 @@ describe('Plan', () => {
   it('edit a non-existent plan', async () => {
     await factory.createMany('Plan', 10);
 
-    const plans = await request(app)
+    const plans = await request
       .put('/plans/11')
       .set('Authorization', adminToken)
       .expect(400);
@@ -123,7 +121,7 @@ describe('Plan', () => {
   it('delete a non-existent plan', async () => {
     await factory.createMany('Plan', 10);
 
-    const plans = await request(app)
+    const plans = await request
       .delete('/plans/11')
       .set('Authorization', adminToken)
       .expect(400);
@@ -147,7 +145,7 @@ describe('Plan', () => {
       price: total_price,
     });
 
-    const deletedPlanInUse = await request(app)
+    const deletedPlanInUse = await request
       .delete(`/plans/${registration_plan_id}`)
       .set('Authorization', adminToken)
       .expect(400);
