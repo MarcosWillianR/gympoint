@@ -10,6 +10,11 @@ import auth from '../../utils/authentication';
 // models
 import Registration from '../../../src/app/models/Registration';
 
+// Default Messages
+import { pt_br } from '../../../src/utils/validations';
+
+const defaultMessages = pt_br.plans;
+
 // Bearer Token
 let adminToken;
 
@@ -24,7 +29,7 @@ describe('Plan', () => {
     adminToken = `Bearer ${token}`;
   });
 
-  it('should be able to create a new Plan', async () => {
+  it('create a new Plan', async () => {
     const planAttributes = await factory.attrs('Plan');
 
     const newPlan = await request
@@ -66,7 +71,7 @@ describe('Plan', () => {
       .delete(`/plans/${newPlan.body.id}`)
       .set('Authorization', adminToken);
 
-    expect(deletedPlan.body.message).toBe('Plano removido com sucesso!');
+    expect(deletedPlan.body.message).toBe(defaultMessages.success_removed);
   });
 
   it('create a plan and list him', async () => {
@@ -103,7 +108,7 @@ describe('Plan', () => {
       .set('Authorization', adminToken)
       .expect(400);
 
-    expect(plans.body.error).toBe('Esse plano não existe.');
+    expect(plans.body.error).toBe(defaultMessages.not_exists);
   });
 
   it('edit a non-existent plan', async () => {
@@ -114,7 +119,7 @@ describe('Plan', () => {
       .set('Authorization', adminToken)
       .expect(400);
 
-    expect(plans.body.error).toBe('Esse plano não existe.');
+    expect(plans.body.error).toBe(defaultMessages.not_exists);
   });
 
   it('delete a non-existent plan', async () => {
@@ -125,7 +130,7 @@ describe('Plan', () => {
       .set('Authorization', adminToken)
       .expect(400);
 
-    expect(plans.body.error).toBe('Esse plano não existe.');
+    expect(plans.body.error).toBe(defaultMessages.not_exists);
   });
 
   it('Error when trying to delete plan in use', async () => {
@@ -151,7 +156,7 @@ describe('Plan', () => {
 
     expect(deletedPlanInUse.body).toHaveProperty(
       'error',
-      'Esse plano está sendo utilizado.'
+      defaultMessages.being_used
     );
   });
 });
