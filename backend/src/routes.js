@@ -29,11 +29,18 @@ import validateStudentUpdate from './app/validators/StudentUpdate';
 
 import validateUserTestStore from './app/validators/UserStoreTest';
 
+// Validators FRONT MOBILE
+import validateMobileSessionStore from './app/validators/MobileSessionStore';
+
 const routes = new Router();
 
 routes.post('/sessions', validateSessionStore, SessionController.store);
 
-routes.post('/mobile-sessions', MobileSessionController.store);
+routes.post(
+  '/mobile-sessions',
+  validateMobileSessionStore,
+  MobileSessionController.store
+);
 
 /**
  * Rotas FRONT WEB
