@@ -17,4 +17,7 @@ export default {
   registration: {
     not_exists: 'Registro do aluno não encontrado',
   },
+  help_order: {
+    question_not_found: 'Pergunta não encontrada',
+  },
 };

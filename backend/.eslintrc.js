@@ -24,6 +24,7 @@ module.exports = {
     "jest/no-identical-title": "error",
     "import/prefer-default-export": "off",
     "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error","import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+    "jest/valid-expect": "error","import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    'no-underscore-dangle': ["error", { "allow": ["_id"] }]
   },
 };

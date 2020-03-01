@@ -1,6 +1,10 @@
 import HelpOrders from '../schemas/HelpOrders';
 import Student from '../models/Student';
 
+import { pt_br } from '../../utils/validations';
+
+const defaultMessages = pt_br.help_order;
+
 class MobileHelpOrdersController {
   async index(req, res) {
     const { student_id } = req.params;
@@ -18,7 +22,9 @@ class MobileHelpOrdersController {
 
       return res.json(question);
     } catch (err) {
-      return res.status(400).json({ error: 'Question not found' });
+      return res
+        .status(400)
+        .json({ error: defaultMessages.question_not_found });
     }
   }
 
