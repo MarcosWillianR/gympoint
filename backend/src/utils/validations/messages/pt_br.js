@@ -14,4 +14,7 @@ export default {
     success_updated: 'Dados do aluno atualizados com sucesso',
     already_exists: 'Esse aluno já existe',
   },
+  registration: {
+    not_exists: 'Registro do aluno não encontrado',
+  },
 };
