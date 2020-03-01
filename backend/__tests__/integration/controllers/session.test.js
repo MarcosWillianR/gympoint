@@ -1,12 +1,18 @@
 import '../../../src/bootstrap';
 import request from '../../utils/request';
 
+// Utils
+import truncate from '../../utils/truncate';
+
+// Default Messages
 import { pt_br } from '../../../src/utils/validations';
 
 const defaultMessages = pt_br.admin_session;
 
 describe('Session', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
+    await truncate();
+
     const {
       TEST_AUTH_NAME: name,
       TEST_AUTH_LOGIN: email,
