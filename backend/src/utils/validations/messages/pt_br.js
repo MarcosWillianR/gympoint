@@ -20,4 +20,7 @@ export default {
   help_order: {
     question_not_found: 'Pergunta não encontrada',
   },
+  check_ins: {
+    max_reached: 'Você ja fez 5 Check-ins nessa semana',
+  },
 };

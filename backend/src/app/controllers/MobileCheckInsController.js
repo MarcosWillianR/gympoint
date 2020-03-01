@@ -1,6 +1,8 @@
 import { startOfWeek, endOfWeek } from 'date-fns';
-
 import CheckIns from '../schemas/CheckIns';
+import { pt_br } from '../../utils/validations';
+
+const defaultMessages = pt_br.check_ins;
 
 class MobileCheckInsController {
   async index(req, res) {
@@ -28,7 +30,7 @@ class MobileCheckInsController {
     });
 
     if (checkins.length >= 5) {
-      return res.status(400).json({ error: 'Too many check-ins' });
+      return res.status(400).json({ error: defaultMessages.max_reached });
     }
 
     const checkin = await CheckIns.create({
