@@ -1,3 +1,4 @@
+import '../../bootstrap';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
 
@@ -12,9 +13,15 @@ class StudentController {
     const where = {};
 
     if (search) {
-      where.name = {
-        [Op.iLike]: `%${search}%`,
-      };
+      if (process.env.NODE_ENV !== 'test') {
+        where.name = {
+          [Op.iLike]: `%${search}%`,
+        };
+      } else {
+        where.name = {
+          [Op.like]: `%${search}%`,
+        };
+      }
     }
 
     const students = await Student.findAll({
