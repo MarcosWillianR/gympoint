@@ -1,6 +1,7 @@
 import faker from 'faker/locale/pt_BR';
 import request from '../../utils/request';
 import mobileAuth from '../../utils/mobileAuthentication';
+import truncate from '../../utils/truncate';
 import { pt_br } from '../../../src/utils/validations';
 import factory from '../../factories';
 
@@ -13,6 +14,10 @@ describe('Help orders', () => {
     const token = await mobileAuth();
 
     studentToken = `Bearer ${token}`;
+  });
+
+  beforeEach(async () => {
+    await truncate();
   });
 
   it('Create a new help order', async () => {
