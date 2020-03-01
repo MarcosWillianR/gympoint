@@ -19,9 +19,15 @@ import authMiddleware from './app/middlewares/auth';
 import mobileAuthMiddleware from './app/middlewares/mobileAuth';
 
 // Validators FRONT WEB
+import validateSessionStore from './app/validators/SessionStore';
+
 import validatePlanStore from './app/validators/PlanStore';
 import validatePlanUpdate from './app/validators/PlanUpdate';
-import validateSessionStore from './app/validators/SessionStore';
+
+import validateStudentStore from './app/validators/StudentStore';
+import validateStudentUpdate from './app/validators/StudentUpdate';
+
+import validateUserTestStore from './app/validators/UserStoreTest';
 
 const routes = new Router();
 
@@ -33,12 +39,22 @@ routes.post('/mobile-sessions', MobileSessionController.store);
  * Rotas FRONT WEB
  */
 
-routes.post('/test/admin-create', UserController.store); // only for tests
+routes.post('/test/admin-create', validateUserTestStore, UserController.store); // only for tests
 
 routes.get('/students', authMiddleware, StudentController.index);
 routes.get('/students/:student_id', authMiddleware, StudentController.show);
-routes.post('/students', authMiddleware, StudentController.store);
-routes.put('/students/:student_id', authMiddleware, StudentController.update);
+routes.post(
+  '/students',
+  authMiddleware,
+  validateStudentStore,
+  StudentController.store
+);
+routes.put(
+  '/students/:student_id',
+  authMiddleware,
+  validateStudentUpdate,
+  StudentController.update
+);
 routes.delete(
   '/students/:student_id',
   authMiddleware,
