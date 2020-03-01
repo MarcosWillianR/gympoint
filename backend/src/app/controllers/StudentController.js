@@ -1,47 +1,55 @@
-import * as Yup from 'yup';
 import { Op } from 'sequelize';
 import Student from '../models/Student';
 
+import { pt_br } from '../../utils/validations';
+
+const defaultMessages = pt_br.students;
+
 class StudentController {
   async index(req, res) {
-    const { name } = req.query;
+    const { search } = req.query;
 
     const where = {};
 
-    if (name) {
+    if (search) {
       where.name = {
-        [Op.like]: `%${name}%`,
+        [Op.iLike]: `%${search}%`,
       };
     }
 
-    const students = await Student.findAll({ where });
+    const students = await Student.findAll({
+      where,
+      attributes: ['id', 'name', 'email', 'age', 'weight', 'height'],
+    });
 
     return res.json(students);
   }
 
-  async store(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
-        .email()
-        .required(),
-      age: Yup.number()
-        .integer()
-        .required(),
-      weight: Yup.number().required(),
-      height: Yup.number().required(),
+  async show(req, res) {
+    const { student_id } = req.params;
+
+    const student = await Student.findByPk(student_id, {
+      attributes: ['id', 'name', 'email', 'age', 'weight', 'height'],
     });
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
+    if (!student) {
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
+    return res.json(student);
+  }
+
+  async store(req, res) {
     const { email } = req.body;
 
-    const studentExists = await Student.findOne({ where: { email } });
+    const student = await Student.findOne({
+      where: {
+        email,
+      },
+    });
 
-    if (studentExists) {
-      return res.status(400).json({ error: 'Student already exists' });
+    if (student) {
+      return res.status(400).json({ error: defaultMessages.already_exists });
     }
 
     const { id, name, age, weight, height } = await Student.create(req.body);
@@ -56,42 +64,18 @@ class StudentController {
     });
   }
 
-  async show(req, res) {
-    const { student_id } = req.params;
-
-    const student = await Student.findByPk(student_id);
-
-    if (!student) {
-      return res.status(400).json({ error: 'Student not found' });
-    }
-
-    return res.json(student);
-  }
-
   async update(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      age: Yup.number().integer(),
-      weight: Yup.number(),
-      height: Yup.number(),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
-
     const { student_id } = req.params;
 
     const student = await Student.findByPk(student_id);
 
     if (!student) {
-      return res.status(400).json({ error: 'Student dont exists' });
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
     await student.update(req.body);
 
-    return res.json({ message: 'Student successfuly updated' });
+    return res.json({ message: defaultMessages.success_updated });
   }
 
   async delete(req, res) {
@@ -100,12 +84,12 @@ class StudentController {
     const student = await Student.findByPk(student_id);
 
     if (!student) {
-      return res.status(400).json({ error: 'Student dont exists' });
+      return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
     await student.destroy();
 
-    return res.json({ message: 'Successfuly student deleted' });
+    return res.json({ message: defaultMessages.success_removed });
   }
 }
 
