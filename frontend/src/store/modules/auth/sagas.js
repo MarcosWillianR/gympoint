@@ -1,4 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import get from 'lodash/get';
 import toast from '~/util/toastStyle';
 
 import api from '~/services/api';
@@ -23,12 +24,13 @@ export function* signIn({ payload }) {
 
     history.push('/dashboard');
   } catch (err) {
-    toast(
-      'E-mail ou senha inválidos, por favor, verifique os campos',
-      '#fff',
-      '#e54b64',
-      'rgba(229,75,100,0.5)'
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'E-mail ou senha inválidos, por favor, verifique os campos'
     );
+
+    toast(errorMessage, '#fff', '#e54b64', 'rgba(229,75,100,0.5)');
 
     yield put(singFailure());
   }

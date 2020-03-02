@@ -31,7 +31,7 @@ export default function Students() {
       }
     }
     getAllStudents();
-  }, []); // eslint-disable-line
+  }, []);
 
   const handleDelete = student_id => {
     const confirmDelete = window.confirm(

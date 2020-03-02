@@ -7,19 +7,19 @@ const INITIAL_STATE = {
 export default function plans(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@plans/PLANS_CREATE_REQUEST': {
+      case '@plans/CREATE_REQUEST': {
         draft.loading = true;
         break;
       }
-      case '@plans/PLANS_EDIT_REQUEST': {
+      case '@plans/EDIT_REQUEST': {
         draft.loading = true;
         break;
       }
-      case '@plans/PLANS_SUCCESS': {
+      case '@plans/REQUEST_SUCCESS': {
         draft.loading = false;
         break;
       }
-      case '@plans/PLANS_FAILURE': {
+      case '@plans/REQUEST_FAILURE': {
         draft.loading = false;
         break;
       }

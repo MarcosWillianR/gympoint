@@ -1,4 +1,5 @@
 import { takeLatest, put, call, all } from 'redux-saga/effects';
+import get from 'lodash/get';
 import api from '~/services/api';
 import history from '~/services/history';
 
@@ -20,12 +21,13 @@ export function* createPlan({ payload }) {
 
     history.push('/plans');
   } catch (err) {
-    toast(
-      'Falha ao tentar criar um novo plano, verifique os dados e tente novamente',
-      '#e54b64',
-      '#fff',
-      '#fff'
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar criar um plano'
     );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
 
     yield put(plansFailure());
   }
@@ -45,7 +47,13 @@ export function* editPlan({ payload }) {
 
     history.push('/plans');
   } catch (err) {
-    toast('Erro ao tentar editar o Plano', '#e54b64', '#fff', '#fff');
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar editar o plano'
+    );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
 
     yield put(plansFailure());
   }
@@ -60,19 +68,20 @@ export function* deletePlan({ payload }) {
 
     window.location.reload();
   } catch (err) {
-    toast(
-      'Erro ao tentar deletar o Plano, ele está em uso?',
-      '#e54b64',
-      '#fff',
-      '#fff'
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar deletar o plano'
     );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
 
     yield put(plansFailure());
   }
 }
 
 export default all([
-  takeLatest('@plans/PLANS_CREATE_REQUEST', createPlan),
-  takeLatest('@plans/PLANS_EDIT_REQUEST', editPlan),
-  takeLatest('@plans/PLANS_DELETE_REQUEST', deletePlan),
+  takeLatest('@plans/CREATE_REQUEST', createPlan),
+  takeLatest('@plans/EDIT_REQUEST', editPlan),
+  takeLatest('@plans/DELETE_REQUEST', deletePlan),
 ]);

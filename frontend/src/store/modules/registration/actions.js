@@ -1,12 +1,12 @@
 export function registrationFailed() {
   return {
-    type: '@registration/REGISTRATION_FAILED',
+    type: '@registration/REQUEST_FAILED',
   };
 }
 
 export function registrationDeleteRequest(registration_id) {
   return {
-    type: '@registration/REGISTRATION_DELETE_REQUEST',
+    type: '@registration/DELETE_REQUEST',
     payload: { registration_id },
   };
 }
@@ -18,14 +18,14 @@ export function registrationUpdateRequest(
   registration_id
 ) {
   return {
-    type: '@registration/REGISTRATION_UPDATE_REQUEST',
+    type: '@registration/UPDATE_REQUEST',
     payload: { plan_id, start_date, student_id, registration_id },
   };
 }
 
 export function registrationCreateRequest(student_id, plan_id, start_date) {
   return {
-    type: '@registration/REGISTRATION_CREATE_REQUEST',
+    type: '@registration/CREATE_REQUEST',
     payload: { student_id, plan_id, start_date },
   };
 }

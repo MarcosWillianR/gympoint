@@ -1,4 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import get from 'lodash/get';
 import api from '~/services/api';
 import history from '~/services/history';
 
@@ -20,7 +21,13 @@ export function* createRequest({ payload }) {
 
     history.push('/students');
   } catch (err) {
-    toast('Erro ao tentar criar um novo aluno', '#e54b64', '#fff', '#fff');
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar criar um novo aluno'
+    );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
     put(studentsFailed());
   }
 }
@@ -28,8 +35,6 @@ export function* createRequest({ payload }) {
 export function* editRequest({ payload }) {
   try {
     const { name, email, age, weight, height, student_id } = payload;
-
-    console.tron.log(payload);
 
     yield call(api.put, `/students/${student_id}`, {
       name,
@@ -41,7 +46,13 @@ export function* editRequest({ payload }) {
 
     history.push('/students');
   } catch (err) {
-    toast('Erro ao tentar editar o aluno', '#e54b64', '#fff', '#fff');
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar editar o aluno'
+    );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
     put(studentsFailed());
   }
 }
@@ -54,7 +65,13 @@ export function* deleteRequest({ payload }) {
 
     window.location.reload();
   } catch (err) {
-    toast('Erro ao tentar deletar o aluno', '#e54b64', '#fff', '#fff');
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar deletar o aluno'
+    );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
     put(studentsFailed());
   }
 }
