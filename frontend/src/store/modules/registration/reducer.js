@@ -7,15 +7,19 @@ const INITIAL_STATE = {
 export default function registration(state = INITIAL_STATE, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@registration/REGISTRATION_DELETE_REQUEST': {
+      case '@registration/DELETE_REQUEST': {
         draft.loading = true;
         break;
       }
-      case '@registration/REGISTRATION_UPDATE_REQUEST': {
+      case '@registration/UPDATE_REQUEST': {
         draft.loading = true;
         break;
       }
-      case '@registration/REGISTRATION_FAILED': {
+      case '@registration/CREATE_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+      case '@registration/REQUEST_FAILED': {
         draft.loading = false;
         break;
       }

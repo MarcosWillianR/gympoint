@@ -64,7 +64,7 @@ export default function Registration() {
       }
     }
     getAllRegistrations();
-  }, []); // eslint-disable-line
+  }, []);
 
   const handleDelete = registration_id => {
     const confirmDelete = window.confirm(
@@ -75,6 +75,7 @@ export default function Registration() {
       dispatch(registrationDeleteRequest(registration_id));
     }
   };
+
   return (
     <Container>
       <Header>
