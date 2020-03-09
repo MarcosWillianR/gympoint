@@ -80,9 +80,15 @@ class StudentController {
       return res.status(400).json({ error: defaultMessages.not_exists });
     }
 
-    await student.update(req.body);
+    const { id, name, age, weight, height } = await student.update(req.body);
 
-    return res.json({ message: defaultMessages.success_updated });
+    return res.json({
+      id,
+      name,
+      age,
+      weight,
+      height,
+    });
   }
 
   async delete(req, res) {
