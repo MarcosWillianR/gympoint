@@ -7,6 +7,18 @@ export const Container = styled.div`
   margin-top: 30px;
 `;
 
+export const WithoutStudentWrapper = styled.div`
+  grid-column: 3 / -3;
+  text-align: center;
+  margin-top: 30px;
+  p {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #e54b64;
+  }
+`;
+
 export const Header = styled.header`
   &,
   div {

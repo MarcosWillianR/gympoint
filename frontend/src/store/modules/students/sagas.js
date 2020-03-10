@@ -5,13 +5,50 @@ import history from '~/services/history';
 
 import toast from '~/util/toastStyle';
 
-import { studentsFailed } from './actions';
+import {
+  studentsFailed,
+  studentsCreateSuccess,
+  studentsGetAllSuccess,
+  studentsGetOneSuccess,
+} from './actions';
+
+export function* getAllRequest() {
+  try {
+    const response = yield call(api.get, '/students');
+
+    return yield put(studentsGetAllSuccess(response.data));
+  } catch (err) {
+    toast('Erro ao tentar listar os alunos', '#e54b64', '#fff', '#fff');
+
+    return yield put(studentsFailed());
+  }
+}
+
+export function* getOneRequest({ payload }) {
+  try {
+    const { student_id } = payload;
+
+    const response = yield call(api.get, `students/${student_id}`);
+
+    return yield put(studentsGetOneSuccess(response.data));
+  } catch (err) {
+    const errorMessage = get(
+      err,
+      'response.data.error',
+      'Erro ao tentar buscar esse aluno'
+    );
+
+    toast(errorMessage, '#e54b64', '#fff', '#fff');
+
+    return yield put(studentsFailed());
+  }
+}
 
 export function* createRequest({ payload }) {
   try {
     const { name, email, age, weight, height } = payload;
 
-    yield call(api.post, '/students', {
+    const response = yield call(api.post, '/students', {
       name,
       email,
       age,
@@ -19,7 +56,7 @@ export function* createRequest({ payload }) {
       height,
     });
 
-    history.push('/students');
+    return yield put(studentsCreateSuccess(response.data));
   } catch (err) {
     const errorMessage = get(
       err,
@@ -28,7 +65,8 @@ export function* createRequest({ payload }) {
     );
 
     toast(errorMessage, '#e54b64', '#fff', '#fff');
-    put(studentsFailed());
+
+    return yield put(studentsFailed());
   }
 }
 
@@ -80,4 +118,6 @@ export default all([
   takeLatest('@students/EDIT_REQUEST', editRequest),
   takeLatest('@students/CREATE_REQUEST', createRequest),
   takeLatest('@students/DELETE_REQUEST', deleteRequest),
+  takeLatest('@students/GET_ALL_REQUEST', getAllRequest),
+  takeLatest('@students/GET_ONE_REQUEST', getOneRequest),
 ]);
