@@ -1,28 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
 import { Form, Input } from '@rocketseat/unform';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
 
-import api from '~/services/api';
 import history from '~/services/history';
 
 import {
   studentsCreateRequest,
   studentsEditRequest,
+  studentsGetOneRequest,
 } from '~/store/modules/students/actions';
 
-import toast from '~/util/toastStyle';
-
 export default function StudentForm({ match }) {
-  const isEditPage = history.location.pathname.match(/edit_student/g);
-  const { student_id } = match.params;
+  const student = useSelector(state => state.students.student);
 
-  const [oneStudent, setOneStudent] = useState({});
-  const dispatch = useDispatch();
+  const [name, setName] = useState(student.name || '');
+  const [email, setEmail] = useState(student.email || '');
+  const [age, setAge] = useState(student.age || '');
+  const [weight, setWeight] = useState(student.weight || '');
+  const [height, setHeight] = useState(student.height || '');
+
+  const dispatch = useCallback(useDispatch(), []);
+
+  const student_id = useMemo(() => match.params.student_id, [match.params]);
+  const isEditPage = useMemo(
+    () => history.location.pathname.match(/edit_student/g),
+    []
+  );
 
   const handleSubmit = ({
     student_name,
@@ -56,19 +64,10 @@ export default function StudentForm({ match }) {
   };
 
   useEffect(() => {
-    async function getOneStudent() {
-      if (isEditPage && student_id) {
-        try {
-          const response = await api.get(`/students/${student_id}`);
-
-          setOneStudent(response.data);
-        } catch (err) {
-          toast('Erro ao tentar listar o aluno', '#e54b64', '#fff', '#fff');
-        }
-      }
+    if (isEditPage && student_id) {
+      dispatch(studentsGetOneRequest(student_id));
     }
-    getOneStudent();
-  }, []); //eslint-disable-line
+  }, [dispatch]); //eslint-disable-line
 
   return (
     <Container>
@@ -91,33 +90,27 @@ export default function StudentForm({ match }) {
             <label>Nome completo</label>
             <Input
               type="text"
-              value={(oneStudent && oneStudent.name) || ''}
+              value={name}
               name="student_name"
-              onChange={e =>
-                setOneStudent({ ...oneStudent, name: e.target.value })
-              }
+              onChange={e => setName(e.target.value)}
             />
           </div>
           <div className="fully">
             <label>Endereço de e-mail</label>
             <Input
               type="email"
-              value={(oneStudent && oneStudent.email) || ''}
+              value={email}
               name="student_email"
-              onChange={e =>
-                setOneStudent({ ...oneStudent, email: e.target.value })
-              }
+              onChange={e => setEmail(e.target.value)}
             />
           </div>
           <div className="one_third">
             <label>Idade</label>
             <Input
               type="text"
-              value={(oneStudent && oneStudent.age) || ''}
+              value={age}
               name="student_age"
-              onChange={e =>
-                setOneStudent({ ...oneStudent, age: e.target.value })
-              }
+              onChange={e => setAge(e.target.value)}
             />
           </div>
           <div className="one_third">
@@ -126,22 +119,18 @@ export default function StudentForm({ match }) {
             </label>
             <Input
               type="text"
-              value={(oneStudent && oneStudent.weight) || ''}
+              value={weight}
               name="student_weight"
-              onChange={e =>
-                setOneStudent({ ...oneStudent, weight: e.target.value })
-              }
+              onChange={e => setWeight(e.target.value)}
             />
           </div>
           <div className="one_third">
             <label>Altura</label>
             <Input
               type="text"
-              value={(oneStudent && oneStudent.height) || ''}
+              value={height}
               name="student_height"
-              onChange={e =>
-                setOneStudent({ ...oneStudent, height: e.target.value })
-              }
+              onChange={e => setHeight(e.target.value)}
             />
           </div>
         </Form>

@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { MdAdd, MdSearch } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Container, Header, SearchWrapper, Wrapper, PlansDesc } from './styles';
+import {
+  Container,
+  Header,
+  SearchWrapper,
+  Wrapper,
+  PlansDesc,
+  WithoutStudentWrapper,
+} from './styles';
 import { Title, RegisterButton } from '~/styles/sharedStyles';
 
 import Loading from '~/components/Loading';
 
-import toast from '~/util/toastStyle';
-
-import api from '~/services/api';
 import history from '~/services/history';
 
-import { studentDeleteRequest } from '~/store/modules/students/actions';
+import {
+  studentDeleteRequest,
+  studentsGetAllRequest,
+} from '~/store/modules/students/actions';
 
 export default function Students() {
-  const [students, setStudents] = useState([]);
+  const loading = useSelector(state => state.students.loading);
+  const students = useSelector(state => state.students.students);
 
-  const dispatch = useDispatch();
+  const dispatch = useCallback(useDispatch(), []);
 
   useEffect(() => {
-    async function getAllStudents() {
-      try {
-        const response = await api.get('/students');
-
-        setStudents(response.data);
-      } catch (err) {
-        toast('Erro ao tentar listar os aluno', '#e54b64', '#fff', '#fff');
-      }
-    }
-    getAllStudents();
-  }, []);
+    dispatch(studentsGetAllRequest());
+  }, [dispatch]);
 
   const handleDelete = student_id => {
     const confirmDelete = window.confirm(
@@ -40,24 +39,6 @@ export default function Students() {
 
     if (confirmDelete) {
       dispatch(studentDeleteRequest(student_id));
-    }
-  };
-
-  const handleSearch = async student_name => {
-    if (student_name) {
-      const result = new RegExp(student_name, 'g');
-
-      const student = students.filter(s => s.name.match(result));
-
-      setTimeout(() => setStudents(student), 500);
-    } else {
-      try {
-        const response = await api.get('/students');
-
-        setTimeout(() => setStudents(response.data), 500);
-      } catch (err) {
-        toast('Erro ao tentar listar os aluno', '#e54b64', '#fff', '#fff');
-      }
     }
   };
 
@@ -74,11 +55,7 @@ export default function Students() {
           </Link>
           <SearchWrapper>
             <MdSearch size={20} color="#999" />
-            <input
-              type="text"
-              placeholder="Buscar pelo nome"
-              onChange={e => handleSearch(e.target.value)}
-            />
+            <input type="text" placeholder="Buscar pelo nome" disabled />
           </SearchWrapper>
         </div>
       </Header>
@@ -88,32 +65,36 @@ export default function Students() {
         <strong>E-mail</strong>
         <strong>Idade</strong>
 
-        {!students.length ? (
+        {loading && (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />
           </>
-        ) : null}
+        )}
 
-        {students.length
-          ? students.map(student => (
-              <PlansDesc key={student.id}>
-                <span>{student.name}</span>
-                <span>{student.email}</span>
-                <span>{student.age}</span>
-                <button
-                  type="button"
-                  onClick={() => history.push(`/edit_student/${student.id}`)}
-                >
-                  editar
-                </button>
-                <button type="button" onClick={() => handleDelete(student.id)}>
-                  apagar
-                </button>
-              </PlansDesc>
-            ))
-          : null}
+        {students.map(student => (
+          <PlansDesc key={student.id}>
+            <span>{student.name}</span>
+            <span>{student.email}</span>
+            <span>{student.age}</span>
+            <button
+              type="button"
+              onClick={() => history.push(`/edit_student/${student.id}`)}
+            >
+              editar
+            </button>
+            <button type="button" onClick={() => handleDelete(student.id)}>
+              apagar
+            </button>
+          </PlansDesc>
+        ))}
+
+        {!students.length && !loading && (
+          <WithoutStudentWrapper>
+            <p>Nenhum aluno cadastrado</p>
+          </WithoutStudentWrapper>
+        )}
       </Wrapper>
     </Container>
   );
