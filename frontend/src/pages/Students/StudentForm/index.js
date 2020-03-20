@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useMemo, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
-import { Form, Input } from '@rocketseat/unform';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Form } from '@unform/web';
+import api from '~/services/api';
+
+import { Input } from '~/components/Form';
+import Loading from '~/components/Loading';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
@@ -12,62 +16,47 @@ import history from '~/services/history';
 import {
   studentsCreateRequest,
   studentsEditRequest,
-  studentsGetOneRequest,
 } from '~/store/modules/students/actions';
 
 export default function StudentForm({ match }) {
-  const student = useSelector(state => state.students.student);
+  const formRef = useRef(null);
+  const loading = useSelector(state => state.students.loading);
 
-  const [name, setName] = useState(student.name || '');
-  const [email, setEmail] = useState(student.email || '');
-  const [age, setAge] = useState(student.age || '');
-  const [weight, setWeight] = useState(student.weight || '');
-  const [height, setHeight] = useState(student.height || '');
+  const isEditPage = history.location.pathname.match(/edit_student/g);
+
+  const { student_id } = match.params;
 
   const dispatch = useCallback(useDispatch(), []);
 
-  const student_id = useMemo(() => match.params.student_id, [match.params]);
-  const isEditPage = useMemo(
-    () => history.location.pathname.match(/edit_student/g),
-    []
-  );
+  const isLoading = useMemo(() => {
+    return loading ? <Loading size="22px"/> : (
+      <>
+        <MdDone size={22} color="#fff" />
+        Salvar
+      </>
+    );
+  }, [loading]);
 
-  const handleSubmit = ({
-    student_name,
-    student_email,
-    student_age,
-    student_weight,
-    student_height,
-  }) => {
+  const handleSubmit = ({ name, email, age, weight, height }) => {
+    const payload = { name, email, age, weight, height }
+
     if (isEditPage) {
-      dispatch(
-        studentsEditRequest(
-          student_name,
-          student_email,
-          student_age,
-          student_weight,
-          student_height,
-          student_id
-        )
-      );
+      dispatch(studentsEditRequest(payload, student_id));
     } else {
-      dispatch(
-        studentsCreateRequest(
-          student_name,
-          student_email,
-          student_age,
-          student_weight,
-          student_height
-        )
-      );
+      dispatch(studentsCreateRequest(payload));
     }
   };
 
   useEffect(() => {
-    if (isEditPage && student_id) {
-      dispatch(studentsGetOneRequest(student_id));
+    if (isEditPage) {
+      async function getOneStudent() {
+        const response = await api.get(`/students/${student_id}`);
+
+        formRef.current.setData(response.data);
+      }
+      getOneStudent();
     }
-  }, [dispatch]); //eslint-disable-line
+  }, []);
 
   return (
     <Container>
@@ -78,63 +67,35 @@ export default function StudentForm({ match }) {
             <MdKeyboardArrowLeft size={22} color="#fff" />
             Voltar
           </button>
-          <button type="submit" form="create_student">
-            <MdDone size={22} color="#fff" />
-            Salvar
-          </button>
+          <button type="submit" form="create_student">{isLoading}</button>
         </div>
       </Header>
-      <Wrapper>
-        <Form id="create_student" onSubmit={handleSubmit}>
-          <div className="fully">
-            <label>Nome completo</label>
-            <Input
-              type="text"
-              value={name}
-              name="student_name"
-              onChange={e => setName(e.target.value)}
-            />
-          </div>
-          <div className="fully">
-            <label>Endereço de e-mail</label>
-            <Input
-              type="email"
-              value={email}
-              name="student_email"
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="one_third">
-            <label>Idade</label>
-            <Input
-              type="text"
-              value={age}
-              name="student_age"
-              onChange={e => setAge(e.target.value)}
-            />
-          </div>
-          <div className="one_third">
-            <label>
-              Peso <span>(em kg)</span>
-            </label>
-            <Input
-              type="text"
-              value={weight}
-              name="student_weight"
-              onChange={e => setWeight(e.target.value)}
-            />
-          </div>
-          <div className="one_third">
-            <label>Altura</label>
-            <Input
-              type="text"
-              value={height}
-              name="student_height"
-              onChange={e => setHeight(e.target.value)}
-            />
-          </div>
-        </Form>
-      </Wrapper>
+        <Wrapper>
+          <Form id="create_student" ref={formRef} onSubmit={handleSubmit}>
+            <div className="fully">
+              <label>Nome completo</label>
+              <Input name="name" />
+            </div>
+            <div className="fully">
+              <label>Endereço de e-mail</label>
+              <Input type="email" name="email" />
+            </div>
+            <div className="one_third">
+              <label>Idade</label>
+              <Input type="number" name="age" min="0"/>
+            </div>
+            <div className="one_third">
+              <label>
+                Peso <span>(em kg)</span>
+              </label>
+              <Input name="weight" />
+            </div>
+            <div className="one_third">
+              <label>Altura</label>
+              <Input name="height" />
+            </div>
+          </Form>
+        </Wrapper>
     </Container>
   );
 }

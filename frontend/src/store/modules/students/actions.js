@@ -31,27 +31,9 @@ export function studentsGetAllSuccess(students) {
   };
 }
 
-export function studentsGetOneSuccess(student) {
-  return {
-    type: '@students/GET_ONE_SUCCESS',
-    payload: {
-      student,
-    },
-  };
-}
-
 export function studentsGetAllRequest() {
   return {
     type: '@students/GET_ALL_REQUEST',
-  };
-}
-
-export function studentsGetOneRequest(student_id) {
-  return {
-    type: '@students/GET_ONE_REQUEST',
-    payload: {
-      student_id,
-    },
   };
 }
 
@@ -62,14 +44,7 @@ export function studentDeleteRequest(student_id) {
   };
 }
 
-export function studentsEditRequest(
-  name,
-  email,
-  age,
-  weight,
-  height,
-  student_id
-) {
+export function studentsEditRequest({ name, email, age, weight, height }, student_id) {
   return {
     type: '@students/EDIT_REQUEST',
     payload: {
@@ -83,7 +58,7 @@ export function studentsEditRequest(
   };
 }
 
-export function studentsCreateRequest(name, email, age, weight, height) {
+export function studentsCreateRequest({ name, email, age, weight, height }) {
   return {
     type: '@students/CREATE_REQUEST',
     payload: {

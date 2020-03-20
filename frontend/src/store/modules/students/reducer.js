@@ -1,9 +1,8 @@
 import produce from 'immer';
 
 const INITIAL_DATA = {
-  loading: true,
+  loading: null,
   students: [],
-  student: {},
 };
 
 export default function students(state = INITIAL_DATA, action) {
@@ -15,12 +14,7 @@ export default function students(state = INITIAL_DATA, action) {
       }
       case '@students/GET_ALL_SUCCESS_REQUEST': {
         draft.students = action.payload.students;
-        draft.loading = false;
-        break;
-      }
-      case '@students/GET_ONE_SUCCESS': {
-        const { student } = action.payload;
-        draft.student = student;
+        draft.student = null;
         draft.loading = false;
         break;
       }
@@ -32,8 +26,7 @@ export default function students(state = INITIAL_DATA, action) {
       }
       case '@students/CREATE_REQUEST':
       case '@students/EDIT_REQUEST':
-      case '@students/GET_ALL_REQUEST':
-      case '@students/GET_ONE_REQUEST': {
+      case '@students/GET_ALL_REQUEST': {
         draft.loading = true;
         break;
       }
