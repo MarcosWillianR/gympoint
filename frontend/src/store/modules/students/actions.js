@@ -13,15 +13,6 @@ export function studentsCreateSuccess(student) {
   };
 }
 
-export function studentsEditSuccess(student) {
-  return {
-    type: '@students/EDIT_SUCCESS_REQUEST',
-    payload: {
-      student,
-    },
-  };
-}
-
 export function studentsGetAllSuccess(students) {
   return {
     type: '@students/GET_ALL_SUCCESS_REQUEST',
