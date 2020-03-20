@@ -5,7 +5,7 @@ import history from '~/services/history';
 
 import toast from '~/util/toastStyle';
 
-import { studentsFailed, studentsGetAllSuccess } from './actions';
+import { studentsFailed, studentsGetAllSuccess, studentsSuccess } from './actions';
 
 export function* getAllRequest() {
   try {
@@ -30,6 +30,8 @@ export function* createRequest({ payload }) {
       weight,
       height,
     });
+
+    yield put(studentsSuccess());
 
     history.push('/students');
   } catch (err) {
@@ -57,6 +59,8 @@ export function* editRequest({ payload }) {
       height,
     });
 
+    yield put(studentsSuccess());
+
     history.push('/students');
   } catch (err) {
     const errorMessage = get(
@@ -75,6 +79,8 @@ export function* deleteRequest({ payload }) {
     const { student_id } = payload;
 
     yield call(api.delete, `/students/${student_id}`);
+
+    yield put(studentsSuccess());
 
     window.location.reload();
   } catch (err) {

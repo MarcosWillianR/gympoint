@@ -8,13 +8,13 @@ const INITIAL_DATA = {
 export default function students(state = INITIAL_DATA, action) {
   return produce(state, draft => {
     switch (action.type) {
-      case '@students/FAILED_REQUEST': {
+      case '@students/FAILED_REQUEST':
+      case '@students/SUCCESS_REQUEST': {
         draft.loading = false;
         break;
       }
       case '@students/GET_ALL_SUCCESS_REQUEST': {
         draft.students = action.payload.students;
-        draft.student = null;
         draft.loading = false;
         break;
       }

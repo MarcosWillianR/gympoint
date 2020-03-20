@@ -4,6 +4,12 @@ export function studentsFailed() {
   };
 }
 
+export function studentsSuccess() {
+  return {
+    type: '@students/SUCCESS_REQUEST',
+  };
+}
+
 export function studentsGetAllSuccess(students) {
   return {
     type: '@students/GET_ALL_SUCCESS_REQUEST',
