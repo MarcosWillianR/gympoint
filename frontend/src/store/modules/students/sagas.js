@@ -5,11 +5,7 @@ import history from '~/services/history';
 
 import toast from '~/util/toastStyle';
 
-import {
-  studentsFailed,
-  studentsCreateSuccess,
-  studentsGetAllSuccess,
-} from './actions';
+import { studentsFailed, studentsGetAllSuccess } from './actions';
 
 export function* getAllRequest() {
   try {
@@ -27,15 +23,13 @@ export function* createRequest({ payload }) {
   try {
     const { name, email, age, weight, height } = payload;
 
-    const response = yield call(api.post, '/students', {
+    yield call(api.post, '/students', {
       name,
       email,
       age,
       weight,
       height,
     });
-
-    yield put(studentsCreateSuccess(response.data));
 
     history.push('/students');
   } catch (err) {

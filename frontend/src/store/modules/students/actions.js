@@ -4,15 +4,6 @@ export function studentsFailed() {
   };
 }
 
-export function studentsCreateSuccess(student) {
-  return {
-    type: '@students/CREATE_SUCCESS_REQUEST',
-    payload: {
-      student,
-    },
-  };
-}
-
 export function studentsGetAllSuccess(students) {
   return {
     type: '@students/GET_ALL_SUCCESS_REQUEST',
