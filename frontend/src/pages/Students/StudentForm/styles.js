@@ -16,6 +16,9 @@ export const Header = styled.header`
     border: 0;
     border-radius: 4px;
     padding: 10px 32px 10px 22px;
+    min-width: 140px;
+    max-height: 42px;
+    justify-content: center;
 
     font-size: 14px;
     text-transform: uppercase;

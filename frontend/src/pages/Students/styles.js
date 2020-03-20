@@ -12,7 +12,7 @@ export const WithoutStudentWrapper = styled.div`
   text-align: center;
   margin-top: 30px;
   p {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     text-transform: uppercase;
     font-weight: bold;
     color: #e54b64;

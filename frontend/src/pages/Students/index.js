@@ -17,10 +17,7 @@ import Loading from '~/components/Loading';
 
 import history from '~/services/history';
 
-import {
-  studentDeleteRequest,
-  studentsGetAllRequest,
-} from '~/store/modules/students/actions';
+import { studentDeleteRequest, studentsGetAllRequest } from '~/store/modules/students/actions';
 
 export default function Students() {
   const loading = useSelector(state => state.students.loading);
@@ -65,6 +62,7 @@ export default function Students() {
         <strong>E-mail</strong>
         <strong>Idade</strong>
 
+
         {loading && (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
@@ -73,15 +71,12 @@ export default function Students() {
           </>
         )}
 
-        {students.map(student => (
+        {!loading && students.map(student => (
           <PlansDesc key={student.id}>
             <span>{student.name}</span>
             <span>{student.email}</span>
             <span>{student.age}</span>
-            <button
-              type="button"
-              onClick={() => history.push(`/edit_student/${student.id}`)}
-            >
+            <button type="button" onClick={() => history.push(`/edit_student/${student.id}`)}>
               editar
             </button>
             <button type="button" onClick={() => handleDelete(student.id)}>

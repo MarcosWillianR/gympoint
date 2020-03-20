@@ -9,7 +9,6 @@ import {
   studentsFailed,
   studentsCreateSuccess,
   studentsGetAllSuccess,
-  studentsGetOneSuccess,
 } from './actions';
 
 export function* getAllRequest() {
@@ -19,26 +18,6 @@ export function* getAllRequest() {
     return yield put(studentsGetAllSuccess(response.data));
   } catch (err) {
     toast('Erro ao tentar listar os alunos', '#e54b64', '#fff', '#fff');
-
-    return yield put(studentsFailed());
-  }
-}
-
-export function* getOneRequest({ payload }) {
-  try {
-    const { student_id } = payload;
-
-    const response = yield call(api.get, `students/${student_id}`);
-
-    return yield put(studentsGetOneSuccess(response.data));
-  } catch (err) {
-    const errorMessage = get(
-      err,
-      'response.data.error',
-      'Erro ao tentar buscar esse aluno'
-    );
-
-    toast(errorMessage, '#e54b64', '#fff', '#fff');
 
     return yield put(studentsFailed());
   }
@@ -56,7 +35,9 @@ export function* createRequest({ payload }) {
       height,
     });
 
-    return yield put(studentsCreateSuccess(response.data));
+    yield put(studentsCreateSuccess(response.data));
+
+    history.push('/students');
   } catch (err) {
     const errorMessage = get(
       err,
@@ -119,5 +100,4 @@ export default all([
   takeLatest('@students/CREATE_REQUEST', createRequest),
   takeLatest('@students/DELETE_REQUEST', deleteRequest),
   takeLatest('@students/GET_ALL_REQUEST', getAllRequest),
-  takeLatest('@students/GET_ONE_REQUEST', getOneRequest),
 ]);
