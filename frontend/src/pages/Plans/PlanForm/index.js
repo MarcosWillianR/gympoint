@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
-import { Form, Input } from '@rocketseat/unform';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form } from '@unform/web';
+
+import { Input } from '~/components/Form';
+import Loading from '~/components/Loading';
 
 import { Header, Wrapper } from './styles';
 import { Container, Title } from '~/styles/sharedStyles';
@@ -19,50 +22,65 @@ import {
 } from '~/store/modules/plans/actions';
 
 export default function PlanForm({ match }) {
-  const isEditPage = history.location.pathname.match(/edit_plan/g);
-  const { plan_id } = match.params;
+  const formRef = useRef(null);
+  const loading = useSelector(state => state.plans.loading);
 
-  const [onePlan, setOnePlan] = useState({});
-  const dispatch = useDispatch();
+  const isEditPage = useMemo(
+    () => history.location.pathname.match(/edit_plan/g),
+    []
+  );
 
-  const handleSubmit = ({ plan_title, plan_duration, plan_price }) => {
+  const plan_id = useMemo(() => match.params.plan_id, [match.params]);
+
+  const dispatch = useCallback(useDispatch(), []);
+
+  const isLoading = useMemo(() => {
+    return loading ? (
+      <Loading size="22px" />
+    ) : (
+      <>
+        <MdDone size={22} color="#fff" />
+        Salvar
+      </>
+    );
+  }, [loading]);
+
+  const handleSubmit = ({ title, duration, price }) => {
+    const payload = { title, duration, price };
+
     if (isEditPage) {
-      dispatch(
-        plansEditRequest(plan_id, plan_title, plan_duration, plan_price)
-      );
+      dispatch(plansEditRequest(payload, plan_id));
     } else {
-      dispatch(plansCreateRequest(plan_title, plan_duration, plan_price));
+      dispatch(plansCreateRequest(payload));
     }
   };
 
   useEffect(() => {
     async function getOnePlan() {
-      if (isEditPage && plan_id) {
+      if (isEditPage) {
         try {
           const response = await api.get(`/plans/${plan_id}`);
 
-          const { duration, price, title } = response.data;
+          const plan = response.data;
 
-          const textDurationFormat = duration > 1 ? 'meses' : 'mês';
-          const totalPrice = duration * price;
+          const textDurationFormat = plan.duration > 1 ? 'meses' : 'mês';
+          const totalPrice = plan.duration * plan.price;
 
           const data = {
-            title,
-            duration,
-            price,
-            totalPrice: priceFormatter(totalPrice),
-            priceFormatted: priceFormatter(price),
-            durationFormatted: `${duration} ${textDurationFormat}`,
+            ...plan,
+            total: priceFormatter(totalPrice),
+            price: priceFormatter(plan.price),
+            duration: `${plan.duration} ${textDurationFormat}`,
           };
 
-          setOnePlan(data);
+          formRef.current.setData(data);
         } catch (err) {
           toast('Erro ao tentar encontrar o plano', '#e54b64', '#fff', '#fff');
         }
       }
     }
     getOnePlan();
-  }, []); //eslint-disable-line
+  }, [isEditPage, plan_id]);
 
   return (
     <Container>
@@ -74,52 +92,29 @@ export default function PlanForm({ match }) {
             Voltar
           </button>
           <button type="submit" form="create_plan">
-            <MdDone size={22} color="#fff" />
-            Salvar
+            {isLoading}
           </button>
         </div>
       </Header>
       <Wrapper>
-        <Form id="create_plan" onSubmit={handleSubmit}>
+        <Form id="create_plan" ref={formRef} onSubmit={handleSubmit}>
           <div className="fully">
             <label>Título do Plano</label>
-            <Input
-              type="text"
-              value={(onePlan && onePlan.title) || ''}
-              name="plan_title"
-              onChange={e => setOnePlan({ ...onePlan, title: e.target.value })}
-            />
+            <Input name="title" />
           </div>
           <div className="one_third">
             <label>
               Duração <span>(em meses)</span>
             </label>
-            <Input
-              type="text"
-              value={(onePlan && onePlan.duration) || ''}
-              name="plan_duration"
-              onChange={e =>
-                setOnePlan({ ...onePlan, duration: e.target.value })
-              }
-            />
+            <Input name="duration" />
           </div>
           <div className="one_third">
             <label>Preço mensal</label>
-            <Input
-              type="text"
-              value={(onePlan && onePlan.price) || ''}
-              name="plan_price"
-              onChange={e => setOnePlan({ ...onePlan, price: e.target.value })}
-            />
+            <Input name="price" />
           </div>
           <div className="one_third">
             <label>Preço total</label>
-            <Input
-              type="text"
-              value={(onePlan && onePlan.totalPrice) || ''}
-              name="plan_total"
-              disabled
-            />
+            <Input name="total" disabled />
           </div>
         </Form>
       </Wrapper>
