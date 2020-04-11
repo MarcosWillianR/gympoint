@@ -1,23 +1,17 @@
-import React, { useMemo } from 'react';
-import * as Yup from 'yup';
+import React, { useMemo, useRef } from 'react';
 import { Form } from '@unform/web';
-import { useDispatch, useSelector } from 'react-redux';
 
-import { Input } from '~/components/Form';
+import { useDispatch, useSelector } from 'react-redux';
 import { signInRequest } from '~/store/modules/auth/actions';
 
-import logo from '~/assets/images/logo.png';
+import { Input } from '~/components/Form';
+import validation from './validation';
 
 import Loading from '~/components/Loading';
-
-const schema = Yup.object().shape({
-  email: Yup.string()
-    .email('Insira um e-mail válido')
-    .required('Campo obrigatório'),
-  senha: Yup.string().required('Campo obrigatório'),
-});
+import logo from '~/assets/images/logo.png';
 
 export default function SignIn() {
+  const formRef = useRef(null);
   const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
 
@@ -25,15 +19,21 @@ export default function SignIn() {
     return loading ? <Loading /> : 'Entrar no sistema';
   }, [loading]);
 
-  const handleSubmit = ({ email, senha }) => {
-    dispatch(signInRequest(email, senha));
+  async function handleSubmit({ email, password }, { reset }) {
+    const { error } = await validation({ email, password }, formRef);
+
+    if (!error) {
+      dispatch(signInRequest(email, password));
+
+      reset();
+    }
   };
 
   return (
     <>
       <img src={logo} alt="Gympoint" />
 
-      <Form schema={schema} onSubmit={handleSubmit}>
+      <Form ref={formRef} onSubmit={handleSubmit}>
         <label htmlFor="email">Seu e-mail</label>
         <Input
           name="email"
@@ -43,7 +43,7 @@ export default function SignIn() {
         />
         <label htmlFor="senha">Sua senha</label>
         <Input
-          name="senha"
+          name="password"
           id="senha"
           type="password"
           placeholder="*************"

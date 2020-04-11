@@ -1,5 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import ReactInputMask from 'react-input-mask';
+
 import { useField } from '@unform/core';
+
+import { Container, ErrorMessage } from './styles';
 
 export default function Input({ name, ...rest }) {
   const inputRef = useRef(null);
@@ -14,10 +18,10 @@ export default function Input({ name, ...rest }) {
   }, [fieldName, registerField]);
 
   return (
-    <div>
-      <input ref={inputRef} defaultValue={defaultValue} {...rest}/>
+    <Container>
+      <ReactInputMask ref={inputRef} defaultValue={defaultValue} {...rest}/>
 
-      { error && <span style={{ color: '#F00' }}>{error}</span> }
-    </div>
+      { error && <ErrorMessage>{error}</ErrorMessage> }
+    </Container>
   );
 }
