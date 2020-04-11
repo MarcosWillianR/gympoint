@@ -25,7 +25,7 @@ const defaultNavigationOptions = {
   headerBackImage: <Icon name="navigate-before" size={24} color="#444" />,
 };
 
-export default (signedIn = false) =>
+export default (signedIn = true) =>
   createAppContainer(
     createSwitchNavigator(
       {
