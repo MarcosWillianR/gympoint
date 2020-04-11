@@ -25,12 +25,9 @@ export default function PlanForm({ match }) {
   const formRef = useRef(null);
   const loading = useSelector(state => state.plans.loading);
 
-  const isEditPage = useMemo(
-    () => history.location.pathname.match(/edit_plan/g),
-    []
-  );
+  const isEditPage = history?.location?.pathname.match(/edit_plan/g);
 
-  const plan_id = useMemo(() => match.params.plan_id, [match.params]);
+  const plan_id = match?.params?.plan_id;
 
   const dispatch = useCallback(useDispatch(), []);
 

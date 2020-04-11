@@ -3,10 +3,7 @@ import { MdAdd } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import {
-  plansDeleteRequest,
-  plansGetAllRequest,
-} from '~/store/modules/plans/actions';
+import { plansDeleteRequest, plansGetAllRequest } from '~/store/modules/plans/actions';
 
 import { Header, Wrapper, PlansDesc, WithoutPlansWrapper } from './styles';
 import { Container, Title, RegisterButton } from '~/styles/sharedStyles';
