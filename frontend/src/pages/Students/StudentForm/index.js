@@ -82,17 +82,17 @@ export default function StudentForm({ match }) {
             </div>
             <div className="one_third">
               <label>Idade</label>
-              <Input type="number" name="age" min="0"/>
+              <Input name="age"/>
             </div>
             <div className="one_third">
               <label>
                 Peso <span>(em kg)</span>
               </label>
-              <Input name="weight" />
+              <Input name="weight" mask="99.9" maskPlaceholder="" />
             </div>
             <div className="one_third">
               <label>Altura</label>
-              <Input name="height" />
+              <Input name="height" mask="9.99" maskPlaceholder="" />
             </div>
           </Form>
         </Wrapper>
