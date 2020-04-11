@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from '@rocketseat/unform';
+// import { Form, Input } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, AnswerWrapper, AnswerStatusWrapper } from './styles';
@@ -33,16 +33,16 @@ export default function AssistAnswer({
           <>
             <h2>Pergunta do Aluno</h2>
             <p>{questionData ? questionData.question : ''}</p>
-            <Form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <strong>Sua resposta</strong>
-              <Input
+              <input
                 multiline
                 name="instructor_answer"
                 type="text"
                 placeholder="responde aqui..."
               />
               <button type="submit">Responder aluno</button>
-            </Form>
+            </form>
           </>
         )}
       </AnswerWrapper>

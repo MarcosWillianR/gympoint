@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
-
+import { Form } from '@unform/web';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { Input } from '~/components/Form';
 import { signInRequest } from '~/store/modules/auth/actions';
 
 import logo from '~/assets/images/logo.png';

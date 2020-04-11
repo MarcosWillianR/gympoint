@@ -6,6 +6,18 @@ export const Header = styled.header`
   justify-content: space-between;
 `;
 
+export const WithoutPlansWrapper = styled.div`
+  grid-column: 3 / -3;
+  text-align: center;
+  margin-top: 30px;
+  p {
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #e54b64;
+  }
+`;
+
 export const Wrapper = styled.div`
   background: #fff;
   padding: 20px;

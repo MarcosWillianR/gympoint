@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdKeyboardArrowLeft, MdDone } from 'react-icons/md';
-import { Form, Input, Select } from '@rocketseat/unform';
 import { useDispatch, useSelector } from 'react-redux';
 import { parseISO } from 'date-fns';
 
@@ -139,7 +138,7 @@ export default function RegistrationForm({ match }) {
         </div>
       </Header>
       <Wrapper>
-        <Form id="create_register" onSubmit={handleSubmit}>
+        <form id="create_register" onSubmit={handleSubmit}>
           <div className="fully">
             <label htmlFor="student">Aluno</label>
             <SelectStudent
@@ -161,7 +160,7 @@ export default function RegistrationForm({ match }) {
           </div>
           <div className="one_four">
             <label htmlFor="plan">Plano</label>
-            <Select
+            <select
               id="plan"
               type="text"
               name="plan_id"
@@ -185,7 +184,7 @@ export default function RegistrationForm({ match }) {
           </div>
           <div className="one_four">
             <label htmlFor="end_date">Data de término</label>
-            <Input
+            <input
               id="end_date"
               type="text"
               name="plan_end_date"
@@ -198,7 +197,7 @@ export default function RegistrationForm({ match }) {
           </div>
           <div className="one_four">
             <label htmlFor="final_value">Valor final</label>
-            <Input
+            <input
               id="final_value"
               type="text"
               name="plan_value"
@@ -206,7 +205,7 @@ export default function RegistrationForm({ match }) {
               disabled
             />
           </div>
-        </Form>
+        </form>
       </Wrapper>
     </Container>
   );

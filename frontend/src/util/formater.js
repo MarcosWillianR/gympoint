@@ -23,3 +23,30 @@ export const dateFormFormat = date => {
     locale: pt,
   });
 };
+
+export const cleanNumber = data => {
+  const cleanData = [];
+
+  const dataKeys = Object.keys(data);
+
+  if (!dataKeys.length) {
+    return cleanData;
+  }
+
+  dataKeys.forEach(value => {
+    const cleanedValue = data[value]
+      .replace(/[A-Za-z]|[!@#$%^&*(),.?":{}|<>]|[\n]/g, '')
+      .trim();
+
+    cleanData.push({ [value]: cleanedValue });
+  });
+
+  return Object.assign(...cleanData);
+};
+
+export const cleanPrice = price => {
+  return price
+    .replace(/[R$]/g, '')
+    .trim()
+    .replace(',', '.');
+};

@@ -1,49 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { MdAdd } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { priceFormatter } from '~/util/formater';
 
-import { plansDeleteRequest } from '~/store/modules/plans/actions';
+import {
+  plansDeleteRequest,
+  plansGetAllRequest,
+} from '~/store/modules/plans/actions';
 
-import api from '~/services/api';
-import toast from '~/util/toastStyle';
-
-import { Header, Wrapper, PlansDesc } from './styles';
+import { Header, Wrapper, PlansDesc, WithoutPlansWrapper } from './styles';
 import { Container, Title, RegisterButton } from '~/styles/sharedStyles';
 
 import Loading from '~/components/Loading';
-
 import history from '~/services/history';
 
 export default function Plans() {
-  const dispatch = useDispatch();
-  const [plans, setPlans] = useState([]);
+  const dispatch = useCallback(useDispatch(), []);
+  const plans = useSelector(state => state.plans.plans);
+  const loading = useSelector(state => state.plans.loading);
 
   useEffect(() => {
-    async function getPlans() {
-      try {
-        const response = await api.get('/plans');
-
-        const data = response.data.map(plan => {
-          const textDurationFormat = plan.duration > 1 ? 'meses' : 'mês';
-          const totalPrice = plan.duration * plan.price;
-
-          return {
-            ...plan,
-            totalPrice: priceFormatter(totalPrice),
-            priceFormatted: priceFormatter(plan.price),
-            durationFormatted: `${plan.duration} ${textDurationFormat}`,
-          };
-        });
-
-        setPlans(data);
-      } catch (err) {
-        toast('Erro ao tentar listar os planos', '#e54b64', '#fff', '#fff');
-      }
-    }
-    getPlans();
-  }, []); // eslint-disable-line
+    dispatch(plansGetAllRequest());
+  }, [dispatch]);
 
   const handleDeletePlan = plan_id => {
     const confirmDelete = window.confirm(
@@ -71,15 +49,15 @@ export default function Plans() {
         <strong>Duração</strong>
         <strong>Valor p/ MÊS</strong>
 
-        {!plans.length ? (
+        {loading && (
           <>
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />
             <Loading align="flex-start" margin="margin-top: 10px" />
           </>
-        ) : null}
+        )}
 
-        {plans.length &&
+        {!loading &&
           plans.map(plan => (
             <PlansDesc key={plan.id}>
               <span>{plan.title}</span>
@@ -96,6 +74,12 @@ export default function Plans() {
               </button>
             </PlansDesc>
           ))}
+
+        {!plans.length && !loading && (
+          <WithoutPlansWrapper>
+            <p>Nenhum plano cadastrado</p>
+          </WithoutPlansWrapper>
+        )}
       </Wrapper>
     </Container>
   );
